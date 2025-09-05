@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { User, Target, BookOpen, TrendingUp, Award, Calendar, LogOut } from 'lucide-react'
-import toast from 'react-hot-toast'
 
 export default function DashboardPage() {
   const { data: session, status } = useSession()
@@ -18,12 +17,7 @@ export default function DashboardPage() {
   }, [status, router])
 
   const handleLogout = async () => {
-    try {
-      await signOut({ callbackUrl: '/' })
-      toast.success('Logged out successfully')
-    } catch (error) {
-      toast.error('Failed to log out')
-    }
+    await signOut({ callbackUrl: '/' })
   }
 
   if (status === 'loading') {
