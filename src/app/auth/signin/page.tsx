@@ -1,52 +1,23 @@
 'use client'
 
 import { useState } from 'react'
-import { signIn, getSession } from 'next-auth/react'
+import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { Eye, EyeOff, Mail, Lock, Sparkles, ArrowLeft } from 'lucide-react'
+import { Sparkles, ArrowLeft } from 'lucide-react'
 import { FcGoogle } from 'react-icons/fc'
 import { FaLinkedin } from 'react-icons/fa'
 import toast from 'react-hot-toast'
 
 export default function SignInPage() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const router = useRouter()
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    setError('')
-
-    try {
-      const result = await signIn('credentials', {
-        email,
-        password,
-        redirect: false,
-      })
-
-      if (result?.error) {
-        setError('Invalid email or password')
-        toast.error('Invalid email or password')
-      } else {
-        toast.success('Successfully signed in!')
-        router.push('/dashboard')
-      }
-    } catch (error) {
-      setError('Something went wrong. Please try again.')
-      toast.error('Something went wrong. Please try again.')
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
   const handleGoogleSignIn = async () => {
     setIsLoading(true)
+    setError('')
     try {
       await signIn('google', { callbackUrl: '/dashboard' })
     } catch (error) {
@@ -58,6 +29,7 @@ export default function SignInPage() {
 
   const handleLinkedInSignIn = async () => {
     setIsLoading(true)
+    setError('')
     try {
       await signIn('linkedin', { callbackUrl: '/dashboard' })
     } catch (error) {
@@ -96,37 +68,6 @@ export default function SignInPage() {
             <p className="text-gray-600">Sign in to continue your career journey</p>
           </div>
 
-          {/* OAuth Sign In Options */}
-          <div className="space-y-3 mb-6">
-            <button
-              onClick={handleGoogleSignIn}
-              disabled={isLoading}
-              className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <FcGoogle className="w-5 h-5 mr-3" />
-              <span className="font-medium text-gray-700">Continue with Google</span>
-            </button>
-            
-            <button
-              onClick={handleLinkedInSignIn}
-              disabled={isLoading}
-              className="w-full flex items-center justify-center px-4 py-3 bg-[#0077B5] hover:bg-[#005885] text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <FaLinkedin className="w-5 h-5 mr-3" />
-              <span className="font-medium">Continue with LinkedIn</span>
-            </button>
-          </div>
-
-          {/* Divider */}
-          <div className="relative mb-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300" />
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">Or continue with email</span>
-            </div>
-          </div>
-
           {/* Error Message */}
           {error && (
             <motion.div
@@ -138,91 +79,52 @@ export default function SignInPage() {
             </motion.div>
           )}
 
-          {/* Sign In Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Email Field */}
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                Email Address
-              </label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                <input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                  placeholder="Enter your email"
-                />
-              </div>
-            </div>
-
-            {/* Password Field */}
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                Password
-              </label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                <input
-                  id="password"
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                  placeholder="Enter your password"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
-              </div>
-            </div>
-
-            {/* Forgot Password */}
-            <div className="text-right">
-              <Link
-                href="/auth/forgot-password"
-                className="text-sm text-blue-600 hover:text-blue-700 transition-colors"
-              >
-                Forgot your password?
-              </Link>
-            </div>
-
-            {/* Submit Button */}
+          {/* OAuth Sign In Options */}
+          <div className="space-y-4">
             <button
-              type="submit"
+              onClick={handleGoogleSignIn}
               disabled={isLoading}
-              className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full flex items-center justify-center px-4 py-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
             >
-              {isLoading ? (
-                <div className="flex items-center justify-center">
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                  Signing In...
-                </div>
-              ) : (
-                'Sign In'
-              )}
+              <FcGoogle className="w-6 h-6 mr-3" />
+              <span className="font-medium text-gray-700 text-lg">Continue with Google</span>
             </button>
-          </form>
+            
+            <button
+              onClick={handleLinkedInSignIn}
+              disabled={isLoading}
+              className="w-full flex items-center justify-center px-4 py-4 bg-[#0077B5] hover:bg-[#005885] text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
+            >
+              <FaLinkedin className="w-6 h-6 mr-3" />
+              <span className="font-medium text-lg">Continue with LinkedIn</span>
+            </button>
+          </div>
 
-          {/* Sign Up Link */}
-          <div className="mt-8 text-center">
-            <p className="text-gray-600">
-              Don't have an account?{' '}
-              <Link
-                href="/auth/signup"
-                className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
-              >
-                Sign up for free
-              </Link>
-            </p>
+          {/* Loading State */}
+          {isLoading && (
+            <div className="mt-6 flex items-center justify-center">
+              <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mr-2"></div>
+              <span className="text-gray-600">Signing you in...</span>
+            </div>
+          )}
+
+          {/* Features */}
+          <div className="mt-8 pt-6 border-t border-gray-200">
+            <h3 className="text-sm font-medium text-gray-700 mb-3">Why choose CareerSathi?</h3>
+            <div className="space-y-2 text-sm text-gray-600">
+              <div className="flex items-center">
+                <div className="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
+                AI-powered career recommendations
+              </div>
+              <div className="flex items-center">
+                <div className="w-2 h-2 bg-purple-500 rounded-full mr-2"></div>
+                Personalized learning roadmaps
+              </div>
+              <div className="flex items-center">
+                <div className="w-2 h-2 bg-pink-500 rounded-full mr-2"></div>
+                Industry insights for Indian market
+              </div>
+            </div>
           </div>
         </motion.div>
 
@@ -233,7 +135,7 @@ export default function SignInPage() {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="mt-8 text-center text-sm text-gray-500"
         >
-          <p>Protected by industry-standard encryption</p>
+          <p>Secure authentication • Privacy protected • Trusted by 50,000+ students</p>
         </motion.div>
       </div>
     </div>

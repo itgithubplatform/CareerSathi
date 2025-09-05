@@ -133,7 +133,7 @@ export default function HomePage() {
               className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
             >
               <Link href="/auth/signin" className="btn-primary group">
-                Get Started Free
+                Sign In to Get Started
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link href="#features" className="btn-secondary">
@@ -325,7 +325,7 @@ export default function HomePage() {
               Start your journey today with CareerSathi.
             </p>
             <Link href="/auth/signin" className="inline-flex items-center px-8 py-4 bg-white text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-              Get Started Free
+              Sign In to Get Started
               <ArrowRight className="ml-2 w-5 h-5" />
             </Link>
           </motion.div>
