@@ -1,29 +1,58 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { signIn } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'nextjs-toploader/app'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Sparkles, ArrowLeft } from 'lucide-react'
 import { FcGoogle } from 'react-icons/fc'
 import { FaLinkedin } from 'react-icons/fa'
 import toast from 'react-hot-toast'
+import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup } from 'firebase/auth';
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import { auth, db } from "@/lib/firebaseConfig";
+import { useAtom } from 'jotai'
+import { userAtom } from '@/lib/atom'
 
 export default function SignInPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const router = useRouter()
+  const [user,setUser] = useAtom(userAtom)
+   
+  useEffect(() => {
+      const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+        setUser(currentUser);
+      });
+  
+      return () => unsubscribe();
+    }, []);
 
+    
   const handleGoogleSignIn = async () => {
     setIsLoading(true)
     setError('')
+    const provider = new GoogleAuthProvider();
     try {
-      await signIn('google', { callbackUrl: '/dashboard' })
-    } catch (error) {
+      const res = await signInWithPopup(auth, provider);
+      const userRef = doc(db, "users", res.user.uid);
+      const snap = await getDoc(userRef);
+      if (!snap.exists()) {
+        await setDoc(userRef, {
+          uid: res.user.uid,
+          name: res.user.displayName,
+          email: res.user.email,
+          image: res.user.photoURL,
+          createdAt: new Date(),
+        });
+      }
+      router.push('/')
+    } catch (error) {      
       setError('Failed to sign in with Google')
       toast.error('Failed to sign in with Google')
-      setIsLoading(false)
+    }finally{
+        setIsLoading(false)
     }
   }
 
@@ -38,7 +67,10 @@ export default function SignInPage() {
       setIsLoading(false)
     }
   }
-
+  if (user) {
+    router.push('/')
+    
+  }
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
       <div className="max-w-md w-full">

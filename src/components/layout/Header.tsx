@@ -1,26 +1,39 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, use } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, User, LogIn, Users, Sparkles } from 'lucide-react'
-import { useSession, signOut } from 'next-auth/react'
 import toast from 'react-hot-toast'
+import { onAuthStateChanged, User as FirebaseUser, signOut} from 'firebase/auth'
+import { auth } from '@/lib/firebaseConfig'
+import { useAtom } from 'jotai'
+import { userAtom } from '@/lib/atom'
+import { useRouter } from 'nextjs-toploader/app'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
-  const { data: session, status } = useSession()
+  const [user, setUser] = useAtom(userAtom);
+  const router = useRouter()
 
   const handleSignOut = async () => {
     try {
-      await signOut({ callbackUrl: '/' })
+      await signOut(auth)
       toast.success('Signed out successfully')
+      router.push('/auth/signin')
     } catch (error) {
       toast.error('Failed to sign out')
     }
   }
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+
+    return () => unsubscribe();
+  }, []);
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10)
@@ -76,9 +89,7 @@ export default function Header() {
 
           {/* Auth Buttons */}
           <div className="hidden lg:flex items-center space-x-4">
-            {status === 'loading' ? (
-              <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-            ) : session ? (
+            { user? (
               <div className="flex items-center space-x-4">
                 <Link
                   href="/dashboard"
@@ -89,7 +100,7 @@ export default function Header() {
                 </Link>
                 <button
                   onClick={handleSignOut}
-                  className="px-4 py-2 text-gray-600 hover:text-gray-700 font-medium transition-colors"
+                  className="px-4 py-2 text-gray-600 hover:text-gray-700 font-medium transition-colors border-2 border-gray-300 rounded-2xl"
                 >
                   Sign Out
                 </button>
@@ -151,7 +162,7 @@ export default function Header() {
               ))}
               
               <div className="pt-4 border-t border-gray-200 space-y-2">
-                {session ? (
+                { user ? (
                   <>
                     <Link
                       href="/dashboard"
@@ -166,7 +177,7 @@ export default function Header() {
                         handleSignOut()
                         setIsMenuOpen(false)
                       }}
-                      className="w-full text-left px-4 py-2 text-gray-600 hover:bg-gray-50 rounded-lg font-medium transition-colors"
+                      className="text-left px-4 py-2 text-gray-600 hover:bg-gray-50 font-medium transition-colors border-2 border-gray-300 rounded-2xl"
                     >
                       Sign Out
                     </button>
