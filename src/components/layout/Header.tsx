@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, User, LogIn, Sparkles } from 'lucide-react'
+import { Menu, X, User, LogIn, Users, Sparkles } from 'lucide-react'
 import { useSession, signOut } from 'next-auth/react'
 import toast from 'react-hot-toast'
 
@@ -95,13 +95,22 @@ export default function Header() {
                 </button>
               </div>
             ) : (
-              <Link
-                href="/auth/signin"
-                className="flex items-center space-x-2 btn-primary"
-              >
-                <LogIn className="w-4 h-4" />
-                <span>Sign In</span>
-              </Link>
+              <>
+                <Link
+                  href="/auth/signin"
+                  className="flex items-center space-x-2 px-4 py-2 text-blue-600 hover:text-blue-700 font-medium transition-colors"
+                >
+                  <LogIn className="w-4 h-4" />
+                  <span>Sign In</span>
+                </Link>
+                <Link
+                  href="/auth/signup"
+                  className="flex items-center space-x-2 btn-primary"
+                >
+                  <Users className="w-4 h-4" />
+                  <span>Sign Up</span>
+                </Link>
+              </>
             )}
           </div>
 
@@ -163,14 +172,24 @@ export default function Header() {
                     </button>
                   </>
                 ) : (
-                  <Link
-                    href="/auth/signin"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="flex items-center justify-center space-x-2 btn-primary w-full"
-                  >
-                    <LogIn className="w-4 h-4" />
-                    <span>Sign In</span>
-                  </Link>
+                  <>
+                    <Link
+                      href="/auth/signin"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="flex items-center space-x-2 px-4 py-2 text-blue-600 hover:bg-blue-50 rounded-lg font-medium transition-colors"
+                    >
+                      <LogIn className="w-4 h-4" />
+                      <span>Sign In</span>
+                    </Link>
+                    <Link
+                      href="/auth/signup"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="flex items-center justify-center space-x-2 btn-primary w-full"
+                    >
+                      <Users className="w-4 h-4" />
+                      <span>Sign Up</span>
+                    </Link>
+                  </>
                 )}
               </div>
             </div>
