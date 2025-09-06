@@ -122,14 +122,14 @@ export default function SignInPage() {
               <span className="font-medium text-gray-700 text-lg">Continue with Google</span>
             </button>
             
-            <button
+            {/* <button
               onClick={handleLinkedInSignIn}
               disabled={isLoading}
               className="w-full flex items-center justify-center px-4 py-4 bg-[#0077B5] hover:bg-[#005885] text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
             >
               <FaLinkedin className="w-6 h-6 mr-3" />
               <span className="font-medium text-lg">Continue with LinkedIn</span>
-            </button>
+            </button> */}
           </div>
 
           {/* Loading State */}
