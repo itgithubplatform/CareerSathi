@@ -2,7 +2,8 @@ import type { Metadata } from 'next'
 import { Inter, Poppins } from 'next/font/google'
 import './globals.css'
 import { AuthProvider } from '@/components/providers/AuthProvider'
-
+import NextTopLoader from 'nextjs-toploader';
+ 
 const inter = Inter({ 
   subsets: ['latin'],
   variable: '--font-inter',
@@ -19,6 +20,9 @@ export const metadata: Metadata = {
   description: 'Personalized AI Career & Skills Advisor for Indian Students. Shape your tomorrow with intelligent career guidance.',
   keywords: 'career advisor, AI career guidance, Indian students, skills development, career planning',
   authors: [{ name: 'CareerSathi Team' }],
+  icons: {
+    icon: '/icon.png',
+  },
   openGraph: {
     title: 'CareerSathi - Your Trusted Career Advisor',
     description: 'Personalized AI Career & Skills Advisor for Indian Students',
@@ -42,6 +46,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${poppins.variable}`}>
       <body className={`${inter.className} antialiased`}>
+        <NextTopLoader color="#B763C5" height={3} showSpinner={false} />
         <AuthProvider>
           {children}
         </AuthProvider>

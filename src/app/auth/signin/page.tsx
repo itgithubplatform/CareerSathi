@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { signIn } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+import { signIn, useSession } from 'next-auth/react'
+import { useRouter } from 'nextjs-toploader/app'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Sparkles, ArrowLeft } from 'lucide-react'
@@ -13,6 +13,7 @@ import toast from 'react-hot-toast'
 export default function SignInPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+  const {data: session, status} = useSession()
   const router = useRouter()
 
   const handleGoogleSignIn = async () => {
@@ -38,7 +39,9 @@ export default function SignInPage() {
       setIsLoading(false)
     }
   }
-
+  if (status==="authenticated") {
+    router.push('/dashboard')
+  }
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
       <div className="max-w-md w-full">

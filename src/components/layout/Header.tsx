@@ -89,7 +89,7 @@ export default function Header() {
                 </Link>
                 <button
                   onClick={handleSignOut}
-                  className="px-4 py-2 text-gray-600 hover:text-gray-700 font-medium transition-colors"
+                  className="px-4 py-2 text-gray-600 hover:text-gray-700 font-medium transition-colors border rounded-2xl"
                 >
                   Sign Out
                 </button>
