@@ -163,7 +163,7 @@ export default function DashboardPage() {
                     <h2 className="text-xl font-semibold text-gray-900">
                       Recommended Jobs
                     </h2>
-                    <Link href="/jobs/recommended" className="text-sm px-4 py-1 font-medium text-blue-600 hover:text-blue-800 hover:underline transition-colors">
+                    <Link href="/jobs" className="text-sm px-4 py-1 font-medium text-blue-600 hover:text-blue-800 hover:underline transition-colors">
                       See more
                     </Link>
                   </div>
@@ -226,10 +226,10 @@ export default function DashboardPage() {
             >
               <h2 className='text-xl font-semibold text-gray-900 mb-6'>Quick Actions</h2>
               <div className="flex gap-3 flex-wrap">
-                <button className="flex items-center gap-2 p-2 px-4 rounded-xl bg-blue-500 text-white text-sm font-semibold hover:scale-105 shadow-md hover:shadow-xl transition-all duration-200">
+                <Link href="/jobs" className="flex items-center gap-2 p-2 px-4 rounded-xl bg-blue-500 text-white text-sm font-semibold hover:scale-105 shadow-md hover:shadow-xl transition-all duration-200">
                   <Briefcase size={16} />
                   Explore Jobs
-                </button>
+                </Link>
                 <button className="flex items-center gap-2 p-2 px-4 rounded-xl border border-blue-400 text-blue-600 bg-blue-50 text-sm font-medium hover:bg-blue-100 hover:scale-105 transition-all duration-200">
                   <User size={16} />
                   Update Profile
