@@ -1,17 +1,19 @@
 "use client"
-import React from 'react'
-import { motion } from 'framer-motion'
+import React, { useEffect } from 'react'
+import {motion} from 'framer-motion'
 import { JobArray } from '@/types/jobsType'
-import JobExpand from './jobExpand'
 import Link from 'next/link'
+import JobExpand from './jobExpand'
+import Pagination from './pagination'
 
-export default function JobsRecommendation({jobsArr}:{jobsArr:JobArray}) {
+export default function JobsSearchResults({querry,jobsArr,noOfPages}:{querry:string,jobsArr:JobArray,noOfPages:number}) {
+    
     const [openIndex, setOpenIndex] = React.useState(-1)
   return (
     <>
       <motion.div initial={{opacity:0, y:20}}
                  animate={{opacity:1, y:0}} transition={{delay:.3}} className='mt-10'>
-                    <h3 className="mb-4 text-xl font-bold">Recommended for you</h3>
+                    <h3 className="mb-4 text-xl font-bold">Results for "<span className='font-semibold text-indigo-600'>{decodeURIComponent(querry)}</span>"</h3>
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                         {
                             jobsArr.map((job, i) => (
@@ -37,10 +39,11 @@ export default function JobsRecommendation({jobsArr}:{jobsArr:JobArray}) {
                             </div>
                         </div>
                             <JobExpand job={job} open={openIndex === i} setOpen={setOpenIndex} />
-                        </>
+                                </>
                             ))
                         }
                     </div>
+                    <Pagination  totalPages={noOfPages}  />
                 </motion.div>
     </>
   )

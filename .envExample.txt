@@ -1,0 +1,10 @@
+LINKEDIN_CLIENT_ID=
+LINKEDIN_CLIENT_SECRET=
+GOOGLE_CLIENT_ID= 
+GOOGLE_CLIENT_SECRET= 
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_COOKIE_SECURE="true"
+NEXTAUTH_SECRET="some-super-random-secret-value"
+DATABASE_URL=
+JOB_API_APP_ID=   //ref: https://developer.adzuna.com
+JOB_API_APP_KEY=  //ref: https://developer.adzuna.com
