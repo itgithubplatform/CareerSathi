@@ -10,7 +10,7 @@ export default function JobsRecommendation({jobsArr}:{jobsArr:JobArray}) {
   return (
     <>
       <motion.div initial={{opacity:0, y:20}}
-                 animate={{opacity:1, y:0}} transition={{delay:.3}} className='mt-10'>
+                 animate={{opacity:1, y:0}} transition={{delay:.3}} className='my-10'>
                     <h3 className="mb-4 text-xl font-bold">Recommended for you</h3>
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                         {
