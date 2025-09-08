@@ -45,7 +45,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} ${poppins.variable}`}>
-      <body className={`${inter.className} antialiased`}>
+      <body className={` antialiased`}>
         <NextTopLoader color="#B763C5" height={3} showSpinner={false} />
         <AuthProvider>
           {children}
