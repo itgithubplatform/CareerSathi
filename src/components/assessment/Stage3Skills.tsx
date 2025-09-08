@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { ChevronLeft, Brain, Code, MessageCircle, Users, Upload, Github, Linkedin, CheckCircle } from 'lucide-react'
+import Link from 'next/link'
 import { AssessmentData } from '@/app/assessment/page'
 
 interface Stage3Props {
@@ -257,6 +258,16 @@ export default function Stage3Skills({ data, onUpdate, onSubmit, onPrev, isSubmi
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Help Option */}
+      <div className="bg-orange-50 rounded-xl p-6 border border-orange-200">
+        <h3 className="text-lg font-semibold text-orange-800 mb-3">Need Help with Skills Assessment?</h3>
+        <p className="text-orange-700 mb-4">Not sure how to rate your skills or feeling confused about the questions?</p>
+        <Link href="/chat" className="inline-flex items-center px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors">
+          <MessageCircle className="w-4 h-4 mr-2" />
+          Chat with CareerSathi for Help
+        </Link>
       </div>
 
       {/* Navigation */}

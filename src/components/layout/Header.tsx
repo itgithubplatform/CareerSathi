@@ -98,11 +98,11 @@ export default function Header() {
                   <span>Sign In</span>
                 </Link>
                 <Link
-                  href="/assessment"
+                  href="/auth/signup"
                   className="flex items-center space-x-2 btn-primary"
                 >
                   <Users className="w-4 h-4" />
-                  <span>Assessment</span>
+                  <span>Sign Up</span>
                 </Link>
               </>
             )}
@@ -176,12 +176,12 @@ export default function Header() {
                       <span>Sign In</span>
                     </Link>
                     <Link
-                      href="/assessment"
+                      href="/auth/signup"
                       onClick={() => setIsMenuOpen(false)}
                       className="flex items-center justify-center space-x-2 btn-primary w-full"
                     >
                       <Users className="w-4 h-4" />
-                      <span>Assessment</span>
+                      <span>Sign Up</span>
                     </Link>
                   </>
                 )}

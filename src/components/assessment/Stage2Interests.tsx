@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { ChevronRight, ChevronLeft, Heart, Code, Palette, DollarSign, Scale, Stethoscope, Lightbulb, Building, FileText, Search } from 'lucide-react'
+import Link from 'next/link'
 import { AssessmentData } from '@/app/assessment/page'
 
 interface Stage2Props {
@@ -190,6 +191,14 @@ export default function Stage2Interests({ data, onUpdate, onNext, onPrev }: Stag
                 <div className="text-sm text-gray-600 mt-1">{motivation.description}</div>
               </button>
             ))}
+            
+            {/* Not Sure Option */}
+            <Link href="/chat" className="block">
+              <div className="w-full p-4 rounded-lg border-2 border-orange-200 bg-orange-50 hover:bg-orange-100 transition-all duration-200 text-center">
+                <div className="font-medium text-orange-800">🤔 I'm not sure about my motivation</div>
+                <div className="text-sm text-orange-600 mt-1">Chat with CareerSathi for guidance</div>
+              </div>
+            </Link>
           </div>
           {errors.motivation && <p className="text-red-500 text-sm mt-2">{errors.motivation}</p>}
         </div>

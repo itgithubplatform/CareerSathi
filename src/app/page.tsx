@@ -132,12 +132,12 @@ export default function HomePage() {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
             >
-              <Link href="/assessment" className="btn-primary group">
-                Take Career Assessment
+              <Link href="/auth/signup" className="btn-primary group">
+                Get Started Free
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
-              <Link href="/auth/signin" className="btn-secondary">
-                Sign In
+              <Link href="/assessment" className="btn-secondary">
+                Take Assessment
               </Link>
             </motion.div>
             
@@ -324,8 +324,8 @@ export default function HomePage() {
               Join thousands of students who have already discovered their perfect career path. 
               Start your journey today with CareerSathi.
             </p>
-            <Link href="/assessment" className="inline-flex items-center px-8 py-4 bg-white text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-              Start Career Assessment
+            <Link href="/auth/signup" className="inline-flex items-center px-8 py-4 bg-white text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+              Get Started Free
               <ArrowRight className="ml-2 w-5 h-5" />
             </Link>
           </motion.div>

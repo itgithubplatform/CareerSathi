@@ -218,6 +218,30 @@ export default function AssessmentResults({ data }: AssessmentResultsProps) {
         )}
       </div>
 
+      {/* Satisfaction Check */}
+      <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+        <h3 className="text-xl font-bold text-gray-900 mb-6">How do you feel about these recommendations?</h3>
+        <div className="grid md:grid-cols-2 gap-4 mb-6">
+          <button className="p-4 bg-green-50 hover:bg-green-100 rounded-xl border-2 border-green-200 hover:border-green-300 transition-all">
+            <div className="text-center">
+              <div className="text-2xl mb-2">😊</div>
+              <h4 className="font-bold text-green-800">Great! I'm satisfied</h4>
+              <p className="text-sm text-green-600">These recommendations match my interests</p>
+            </div>
+          </button>
+          
+          <Link href="/chat" className="block">
+            <div className="p-4 bg-orange-50 hover:bg-orange-100 rounded-xl border-2 border-orange-200 hover:border-orange-300 transition-all">
+              <div className="text-center">
+                <div className="text-2xl mb-2">🤔</div>
+                <h4 className="font-bold text-orange-800">I need more guidance</h4>
+                <p className="text-sm text-orange-600">Chat with CareerSathi for clarity</p>
+              </div>
+            </div>
+          </Link>
+        </div>
+      </div>
+
       {/* Action Buttons */}
       <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
         <h3 className="text-xl font-bold text-gray-900 mb-6">What's Next?</h3>
@@ -238,11 +262,13 @@ export default function AssessmentResults({ data }: AssessmentResultsProps) {
             </div>
           </Link>
           
-          <div className="p-6 bg-purple-50 rounded-xl hover:bg-purple-100 transition-colors cursor-pointer">
-            <RotateCcw className="w-8 h-8 text-purple-600 mb-3" />
-            <h4 className="font-bold text-gray-900 mb-2">Retake Assessment</h4>
-            <p className="text-sm text-gray-600">Update your profile and get new matches</p>
-          </div>
+          <Link href="/assessment" className="block">
+            <div className="p-6 bg-purple-50 rounded-xl hover:bg-purple-100 transition-colors cursor-pointer">
+              <RotateCcw className="w-8 h-8 text-purple-600 mb-3" />
+              <h4 className="font-bold text-gray-900 mb-2">Retake Assessment</h4>
+              <p className="text-sm text-gray-600">Update your profile and get new matches</p>
+            </div>
+          </Link>
         </div>
       </div>
     </motion.div>
