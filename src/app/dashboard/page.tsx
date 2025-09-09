@@ -1,6 +1,7 @@
 'use client'
 
 import { useSession, signOut } from 'next-auth/react'
+<<<<<<< HEAD
 import { useRouter } from 'nextjs-toploader/app'
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -11,6 +12,12 @@ import { chats, getRandomGreeting, recommendedJobs } from '@/lib/constants'
 import { careerTasks } from '@/lib/constants'
 import Link from 'next/link'
 
+=======
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
+import { motion } from 'framer-motion'
+import { User, Target, BookOpen, TrendingUp, Award, Calendar, LogOut } from 'lucide-react'
+>>>>>>> main
 
 export default function DashboardPage() {
   const { data: session, status } = useSession()
@@ -19,6 +26,7 @@ export default function DashboardPage() {
   const [greeting, setGreeting] = useState('');
   const [supportText, setSupportText] = useState('');
 
+<<<<<<< HEAD
   useEffect(()=>{
     const { greeting, supportText } = getRandomGreeting()
     setGreeting(greeting)
@@ -29,6 +37,17 @@ export default function DashboardPage() {
     updated[index].done = !updated[index].done;
     setTasks(updated);
   };
+=======
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/auth/signin')
+    }
+  }, [status, router])
+
+  const handleLogout = async () => {
+    await signOut({ callbackUrl: '/' })
+  }
+>>>>>>> main
 
   if (status === 'loading') {
     return (

@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, User, LogIn, Users, Sparkles } from 'lucide-react'
 import { useSession, signOut } from 'next-auth/react'
-import toast from 'react-hot-toast'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -13,12 +12,7 @@ export default function Header() {
   const { data: session, status } = useSession()
 
   const handleSignOut = async () => {
-    try {
-      await signOut({ callbackUrl: '/' })
-      toast.success('Signed out successfully')
-    } catch (error) {
-      toast.error('Failed to sign out')
-    }
+    await signOut({ callbackUrl: '/' })
   }
 
   useEffect(() => {

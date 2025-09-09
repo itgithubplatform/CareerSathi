@@ -136,8 +136,8 @@ export default function HomePage() {
                 Get Started Free
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
-              <Link href="/auth/signin" className="btn-secondary">
-                Sign In
+              <Link href="/assessment" className="btn-secondary">
+                Take Assessment
               </Link>
             </motion.div>
             

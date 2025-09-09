@@ -8,7 +8,6 @@ import { motion } from 'framer-motion'
 import { Sparkles, ArrowLeft } from 'lucide-react'
 import { FcGoogle } from 'react-icons/fc'
 import { FaLinkedin } from 'react-icons/fa'
-import toast from 'react-hot-toast'
 
 export default function SignInPage() {
   const [isLoading, setIsLoading] = useState(false)
@@ -23,7 +22,6 @@ export default function SignInPage() {
       await signIn('google', { callbackUrl: '/dashboard' })
     } catch (error) {
       setError('Failed to sign in with Google')
-      toast.error('Failed to sign in with Google')
       setIsLoading(false)
     }
   }
@@ -35,7 +33,6 @@ export default function SignInPage() {
       await signIn('linkedin', { callbackUrl: '/dashboard' })
     } catch (error) {
       setError('Failed to sign in with LinkedIn')
-      toast.error('Failed to sign in with LinkedIn')
       setIsLoading(false)
     }
   }
