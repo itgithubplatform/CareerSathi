@@ -1,7 +1,6 @@
 'use client'
 
 import { useSession, signOut } from 'next-auth/react'
-<<<<<<< HEAD
 import { useRouter } from 'nextjs-toploader/app'
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -12,12 +11,6 @@ import { chats, getRandomGreeting, recommendedJobs } from '@/lib/constants'
 import { careerTasks } from '@/lib/constants'
 import Link from 'next/link'
 
-=======
-import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { User, Target, BookOpen, TrendingUp, Award, Calendar, LogOut } from 'lucide-react'
->>>>>>> main
 
 export default function DashboardPage() {
   const { data: session, status } = useSession()
@@ -26,7 +19,6 @@ export default function DashboardPage() {
   const [greeting, setGreeting] = useState('');
   const [supportText, setSupportText] = useState('');
 
-<<<<<<< HEAD
   useEffect(()=>{
     const { greeting, supportText } = getRandomGreeting()
     setGreeting(greeting)
@@ -37,7 +29,6 @@ export default function DashboardPage() {
     updated[index].done = !updated[index].done;
     setTasks(updated);
   };
-=======
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.push('/auth/signin')
@@ -47,7 +38,6 @@ export default function DashboardPage() {
   const handleLogout = async () => {
     await signOut({ callbackUrl: '/' })
   }
->>>>>>> main
 
   if (status === 'loading') {
     return (
@@ -64,7 +54,7 @@ export default function DashboardPage() {
   return (
     <>
       <Header />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-6 pt-28">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-6 pt-20 lg:pt-28">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <motion.div
@@ -130,7 +120,7 @@ export default function DashboardPage() {
             </motion.div>
 
             {/* Goals + Jobs */}
-            <div className="grid grid-cols-2 lg:grid-cols-1 gap-6 ">
+            <div className="grid grid-cols-1 gap-6 ">
               {/* Today's Goal */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
