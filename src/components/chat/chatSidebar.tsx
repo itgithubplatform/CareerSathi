@@ -1,16 +1,16 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, PlusCircle, MessageSquare, Sparkles, Link, SparklesIcon, MessageCircle } from "lucide-react";
+import { useRouter } from "nextjs-toploader/app";
 import { useState } from "react";
 
-export default function ChatSidebar({ darkMode, recentConversations, currentSessionId, loadChatSession, startNewChat }:{
+export default function ChatSidebar({ darkMode, recentConversations, currentSessionId, startNewChat }:{
   darkMode: boolean;
   recentConversations: any[];
   currentSessionId: string | null;
-  loadChatSession: (sessionId: string) => void;
   startNewChat: () => void;
 }) {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-
+const router = useRouter();
   return (
     <>
       {/* Mobile Trigger Button */}
@@ -35,7 +35,7 @@ export default function ChatSidebar({ darkMode, recentConversations, currentSess
         {/* New Conversation Button */}
         <button
           onClick={startNewChat}
-          className={`flex items-center gap-3 p-3 rounded-2xl w-full text-left font-semibold mb-4 transition-all duration-300 shadow-md hover:shadow-lg ${darkMode
+          className={`flex items-center gap-3 p-3 rounded-xl w-full text-left font-semibold mb-4 transition-all duration-300 shadow-md hover:shadow-lg ${darkMode
             ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:from-pink-600 hover:to-purple-700'
             : 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:from-indigo-600 hover:to-purple-700'
           }`}
@@ -54,16 +54,15 @@ export default function ChatSidebar({ darkMode, recentConversations, currentSess
               whileHover={{ y: -3 }}
               transition={{ duration: 0.1, ease: "easeInOut" }}
               key={conv.id}
-              onClick={() => loadChatSession(conv.id)}
-              className={`flex items-center gap-2 p-2 rounded-2xl cursor-pointer transition-all hover:shadow-lg px-3 shadow-sm ${currentSessionId === conv.id
-                ? 'bg-purple-50'
+              onClick={() => router.push(`/chat/${conv.id}`)}
+              className={`flex items-center gap-2 py-3 rounded-xl cursor-pointer transition-all hover:shadow-lg px-4 shadow-sm ${currentSessionId === conv.id
+                ? 'bg-indigo-200'
                 : "bg-white border text-zinc-700"
               }`}
             >
-              <MessageSquare size={18} className="flex-shrink-0" />
+              {/* <MessageSquare size={18} className="flex-shrink-0" /> */}
               <div className="truncate">
                 <p className="font-semibold text-sm">{conv.title || "Untitled Chat"}</p>
-                <p className="text-xs text-gray-500 truncate">{conv.lastMessage || '...'}</p>
               </div>
             </motion.div>
           ))}
@@ -127,7 +126,7 @@ export default function ChatSidebar({ darkMode, recentConversations, currentSess
                     transition={{ duration: 0.1, ease: "easeInOut" }}
                     key={conv.id}
                     onClick={() => {
-                      loadChatSession(conv.id);
+                      router.push(`/chat/${conv.id}`);
                       setSidebarOpen(false); // auto close on select
                     }}
                     className={`flex items-center gap-2 p-2 rounded-2xl cursor-pointer transition-all hover:shadow-lg px-3 shadow-sm ${currentSessionId === conv.id
