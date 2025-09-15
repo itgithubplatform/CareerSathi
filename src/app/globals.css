@@ -47,3 +47,24 @@
     @apply bg-white text-blue-600 border-2 border-blue-500 hover:bg-blue-50 font-semibold py-3 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1;
   }
 }
+/* Chat bubbles */
+.chat-bubble {
+  max-width: 600px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background-color: #f3f3f3; /* bot bubble */
+  margin: 8px 0;
+  white-space: pre-wrap; /* keep line breaks */
+  line-height: 1.5;
+}
+
+.chat-bubble.user {
+  background-color: #0b93f6;
+  color: white;
+  align-self: flex-end;
+}
+
+.chat-container {
+  display: flex;
+  flex-direction: column;
+}
