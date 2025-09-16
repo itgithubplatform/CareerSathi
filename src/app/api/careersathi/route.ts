@@ -1,9 +1,17 @@
 import { NextResponse } from "next/server";
 import { askVertex } from "@/lib/vertex";
 import { ChatMessage } from "@/types/chat";
+import { prisma } from "@/lib/prisma";
+import { authOptions } from "@/lib/auth";
+import { getServerSession } from "next-auth";
 
 export async function POST(req: Request) {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      
+    }
     const body = await req.json();
     const message = typeof body.message === "string" ? body.message : "";
     const history: ChatMessage[] = Array.isArray(body.history) ? body.history : [];
@@ -13,65 +21,61 @@ export async function POST(req: Request) {
         `${h.role === "user" ? "Student" : "CareerSathi"}: ${h.text}`
       )
       .join("\n");
+const userProfile = await prisma.userProfile.findUnique({
+  where: { userId: session.user.id },select: {
+    createdAt:false,
+    updatedAt: false,
+    id: false,
+    userId: false,
+    education: true,
+    stream: true,
+    situation: true,
+    environment: true,
+    activities: true,
+    learningStyles: true,
+    uncertainty: true,
+    tradeoff: true
+  } 
+})
+   const prompt = `
+You are CareerSathi, a friendly but practical career guidance mentor.
 
-    const prompt = `
-You are CareerSathi, a career guidance mentor.
+Output rules:
+- Always return a single JSON object.
+- No text or code blocks outside the JSON.
+- JSON format:
+{
+  "title": "short title only for first message when no conversation so far; otherwise empty string",
+  "content": "Markdown-formatted reply shown in chat. Keep it concise, warm, and clear.",
+  "roadmap": "" OR {
+    "careerPath": "string",
+    "skillsToLearn": ["skill1", "skill2"],
+    "recommendedProjects": [
+      { "title": "string", "description": "string" }
+    ]
+  }
+}
+- Use double quotes for all strings.
+- Escape newlines as \\n.
 
-Always respond in **Markdown** for the user interface. Avoid raw HTML.
+User profile context (from form submission):
+${JSON.stringify(userProfile)}
 
-Conversation context:
+Conversation so far:
 ${conversationText}
 
 Student says: "${message}"
 
-Your job:
-- During the initial conversation:
-  - Ask clarifying questions about the student's **interests, strengths, constraints** (family, finances, health, location, preferred work style).
-  - Example questions:
-    - Do they prefer creative work, technical problem-solving, or people-oriented roles?
-    - How soon do they want to start earning money?
-    - Remote, in-office, or hybrid preference?
-    - What subjects, hobbies, or existing skills do they enjoy?
-- Keep responses **warm, encouraging, and concise**.
-- Do **not** suggest roadmap yet if you don’t have enough information.
-
-Rules for JSON output:
-- Always output a JSON object at the end of your response in the following format:
-{
-  "title": "only generate a short meaningful title for the first chat; otherwise leave as empty string",
-  "content": "the Markdown content of your reply",
-  "roadmap": "leave as empty string if not enough info; otherwise an object containing careerPath, skillsToLearn[], recommendedProjects[]"
-}
-
-Once you have enough information about the student:
-- Suggest realistic **career paths** with learning steps.
-- Provide **roadmap** in the JSON object. Example:
-
-{
-  "title": "Data Analyst Career Roadmap",
-  "content": "Here is what I suggest based on your interests and constraints:\n\n### Career Path\n- Data Analyst\n\n### Skills to Learn\n- Python for Data\n- SQL\n- Power BI\n\n### Recommended Projects\n- Sales Dashboard: Analyze sales data and visualize KPIs\n- Survey Analysis: Analyze survey results and present insights",
-  "roadmap": {
-    "careerPath": "Data Analyst",
-    "skillsToLearn": ["Python for Data", "SQL", "Power BI"],
-    "recommendedProjects": [
-      { "title": "Sales Dashboard", "description": "Analyze sales data and visualize KPIs" },
-      { "title": "Survey Analysis", "description": "Analyze survey results and present insights" }
-    ]
-  }
-}
-
-Important:
-- Only output a single JSON object and nothing else. 
-- Do not add any explanation or text outside the JSON. 
-- Use double quotes " for all keys and string values. Escape newlines as \n.
-Only output a single JSON object.
-Do NOT include code blocks or any text outside the JSON.
-Use double quotes " for all keys and string values. Escape newlines as \n.
-- If this is **not the first chat**, set "title" as an empty string.
-- If there isn’t enough information to generate a roadmap yet, set "roadmap" to ".
-- Always keep the **Markdown content** for the chat in "content" so the UI can render it.
+Guidelines:
+1. Early stage:
+   - Ask **1–2 clarifying questions only** about interests, strengths, or constraints.
+   - Keep it conversational and not overwhelming.
+   - Don’t suggest a roadmap until you have enough info.
+2. Once enough info is clear:
+   - Suggest **1 realistic career path** (not too many options at once).
+   - Add **skills to learn** and **small starter projects** in roadmap.
+3. Always keep responses concise, encouraging, expressive with emojis, and easy to read in Markdown.
 `;
-
 
     const rawReply = (await askVertex(prompt)).trim();
     console.log("CareerSathi raw reply:", rawReply);
@@ -84,7 +88,24 @@ Use double quotes " for all keys and string values. Escape newlines as \n.
 
     let reply;
     reply = JSON.parse(match[1] ?? match[0]);
-
+    if (reply.roadmap) {
+      const roadmap = reply.roadmap
+      const newRoadmap = await prisma.roadmap.create({
+        data: {
+          careerPath: roadmap.careerPath,
+          skillsToLearn: {
+            create: roadmap.skillsToLearn.map((skill: string) => ({ skill, done: false })),
+          },
+          recommendedProjects: {
+            create: roadmap.recommendedProjects.map((project: any) => ({
+              title: project.title,
+              description: project.description,
+            })),
+          },
+        },
+      })
+      return NextResponse.json({ reply: `${reply.content}\n\n[View roadmap](/roadmap/${newRoadmap.id})`, title: reply.title});
+    }
     return NextResponse.json({ reply: reply.content, title: reply.title });
   } catch (err) {
     console.error("CareerSathi API error:", err);

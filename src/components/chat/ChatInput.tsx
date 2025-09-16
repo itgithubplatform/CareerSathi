@@ -34,7 +34,11 @@ export default function ChatInput({
           e.target.style.height = "auto";
           e.target.style.height = e.target.scrollHeight + "px";
         }}
-        onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && handleSend()}
+        onKeyDown={(e) => {
+          if(e.key === "Enter" && !e.shiftKey){
+            e.preventDefault();
+            handleSend()
+          }}}
       />
       <button
         className="absolute right-2 bottom-2 p-2 bg-purple-100 rounded-full hover:scale-105 hover:bg-purple-200 transition disabled:opacity-50"

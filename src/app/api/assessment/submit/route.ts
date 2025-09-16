@@ -12,60 +12,35 @@ export async function POST(request: NextRequest) {
     }
 
     const assessmentData = await request.json()
-
-    // Save assessment data to database
     const assessment = await prisma.userProfile.upsert({
-      where: { userId: session.user.id },
-      update: {
-        // Stage 1 - Identity
-        dateOfBirth: assessmentData.age ? new Date(new Date().getFullYear() - assessmentData.age, 0, 1) : null,
-        location: assessmentData.location,
-        education: assessmentData.educationLevel,
-        currentStatus: assessmentData.currentYear,
-        
-        // Stage 2 - Interests
-        interests: JSON.stringify(assessmentData.interestDomains),
-        careerGoals: assessmentData.motivation,
-        
-        // Stage 3 - Skills
-        skills: JSON.stringify({
-          problemSolving: assessmentData.problemSolving,
-          codingProficiency: assessmentData.codingProficiency,
-          communication: assessmentData.communication,
-          teamwork: assessmentData.teamwork,
-          techFamiliarity: assessmentData.techFamiliarity,
-          hasProjects: assessmentData.hasProjects,
-          projectDescription: assessmentData.projectDescription
-        }),
-        
-        // Optional fields
-        phone: assessmentData.linkedinUrl || null,
-        preferredIndustry: JSON.stringify(assessmentData.dayToDay),
-        experienceLevel: assessmentData.hasProjects ? 'beginner' : 'fresher'
-      },
-      create: {
-        userId: session.user.id,
-        dateOfBirth: assessmentData.age ? new Date(new Date().getFullYear() - assessmentData.age, 0, 1) : null,
-        location: assessmentData.location,
-        education: assessmentData.educationLevel,
-        currentStatus: assessmentData.currentYear,
-        interests: JSON.stringify(assessmentData.interestDomains),
-        careerGoals: assessmentData.motivation,
-        skills: JSON.stringify({
-          problemSolving: assessmentData.problemSolving,
-          codingProficiency: assessmentData.codingProficiency,
-          communication: assessmentData.communication,
-          teamwork: assessmentData.teamwork,
-          techFamiliarity: assessmentData.techFamiliarity,
-          hasProjects: assessmentData.hasProjects,
-          projectDescription: assessmentData.projectDescription
-        }),
-        phone: assessmentData.linkedinUrl || null,
-        preferredIndustry: JSON.stringify(assessmentData.dayToDay),
-        experienceLevel: assessmentData.hasProjects ? 'beginner' : 'fresher'
+    where: { userId: session.user.id },
+    update: {
+      education: assessmentData.education,
+      stream: assessmentData.stream,
+      situation: assessmentData.situation,
+      environment: assessmentData.environment,
+      activities: assessmentData.activities,
+      learningStyles: assessmentData.learningStyles,
+      uncertainty: assessmentData.uncertainty,
+      tradeoff: assessmentData.tradeoff,
+    },
+    create: {
+      education: assessmentData.education,
+      stream: assessmentData.stream,
+      situation: assessmentData.situation,
+      environment: assessmentData.environment,
+      activities: assessmentData.activities,
+      learningStyles: assessmentData.learningStyles,
+      uncertainty: assessmentData.uncertainty,
+      tradeoff: assessmentData.tradeoff,
+      user: {
+        connect: {
+          id: session.user.id
+        }
       }
-    })
-
+    },
+  });
+    
     return NextResponse.json({ 
       success: true, 
       assessmentId: assessment.id,

@@ -32,10 +32,19 @@ export const authOptions: NextAuthOptions = {
     strategy: 'jwt',
   },
   callbacks: {
-    async jwt({ token, user, account }) {
+    async jwt({ token, user, account, trigger }) {
       if (user) {
         token.uid = String(user.id)
+         const profile = await prisma.userProfile.findUnique({
+        where: { userId: user.id }})
+        token.hasAssessment = !!profile
       }
+      if (trigger === "update") {
+      const profile = await prisma.userProfile.findUnique({
+        where: { userId: token.uid } 
+      })
+      token.hasAssessment = !!profile
+    }
       if (account?.provider) {
         token.provider = account.provider
       }

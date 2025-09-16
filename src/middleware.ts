@@ -1,8 +1,11 @@
 import { withAuth } from 'next-auth/middleware'
+import { NextResponse } from 'next/server'
 
 export default withAuth(
   function middleware(req) {
-    // Add any additional middleware logic here
+    if (!req.nextauth.token?.hasAssessment) {
+      return NextResponse.redirect(new URL('/assessment', req.url))
+    }
   },
   {
     callbacks: {
@@ -12,5 +15,5 @@ export default withAuth(
 )
 
 export const config = {
-  matcher: ['/dashboard/:path*',"/jobs/:path*","/assessment/:path*","/chat/:path*","/api/careersathi/:path*"],
+  matcher: ['/dashboard/:path*',"/jobs/:path*","/chat/:path*","/api/careersathi/:path*"],
 }

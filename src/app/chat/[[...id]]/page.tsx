@@ -1,5 +1,5 @@
 "use client";
-import { use, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import { createChatSession, saveChatMessage, updateChatSessionTitle } from "@/lib/chatStorage";
@@ -20,7 +20,7 @@ export default function ChatPage() {
   const [darkMode, setDarkMode] = useState(false);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
-
+  const [sessionId, setSessionId] = useState(id);
   const router = useRouter();
   const recentConversations = useChatSessions(userId);
   const { messages, loading, setMessages } = useChatMessages(userId, id);
@@ -32,12 +32,15 @@ export default function ChatPage() {
     setInput("");
   };
 
-
+  useEffect(() => {
+    if (id) {
+      setSessionId(id);
+    }
+  }, [id]);
   const handleSend = async () => {
     if (!input.trim() || isTyping) return;
 
     const userMessage: ChatMessage = { role: "user", text: input };
-    let sessionId = id;
     let isNew = false;
 
     setMessages((prev) => [...prev, userMessage]);
@@ -49,7 +52,8 @@ export default function ChatPage() {
 
       if (!sessionId) {
         isNew = true;
-        sessionId = await createChatSession(userId, "New Chat");
+        const generatedSessionId = await createChatSession(userId, "New Chat");
+        setSessionId(generatedSessionId);
         window.history.replaceState(null, "", `/chat/${sessionId}`);
 
       }
