@@ -1,5 +1,5 @@
 "use client";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import { createChatSession, saveChatMessage, updateChatSessionTitle } from "@/lib/chatStorage";
@@ -20,7 +20,7 @@ export default function ChatPage() {
   const [darkMode, setDarkMode] = useState(false);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
-  const [sessionId, setSessionId] = useState(id);
+  const [currentSessionId, setCurrentSessionId] = useState<string|undefined>(id);
   const router = useRouter();
   const recentConversations = useChatSessions(userId);
   const { messages, loading, setMessages } = useChatMessages(userId, id);
@@ -30,18 +30,20 @@ export default function ChatPage() {
     router.push("/chat");
     setMessages([]);
     setInput("");
+    setCurrentSessionId(undefined);
   };
 
   useEffect(() => {
     if (id) {
-      setSessionId(id);
+      setCurrentSessionId(id);
     }
   }, [id]);
+
   const handleSend = async () => {
     if (!input.trim() || isTyping) return;
 
     const userMessage: ChatMessage = { role: "user", text: input };
-    let isNew = false;
+    let sessionId = currentSessionId;
 
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
@@ -49,13 +51,13 @@ export default function ChatPage() {
 
     try {
       if (!userId) throw new Error("User not logged in");
-
+      
+      // Create new session if needed
       if (!sessionId) {
-        isNew = true;
         const generatedSessionId = await createChatSession(userId, "New Chat");
-        setSessionId(generatedSessionId);
-        window.history.replaceState(null, "", `/chat/${sessionId}`);
-
+        setCurrentSessionId(generatedSessionId);
+        sessionId = generatedSessionId;
+        window.history.replaceState(null, "", `/chat/${generatedSessionId}`);
       }
 
       await saveChatMessage(userId, sessionId, "user", userMessage.text);
@@ -92,7 +94,7 @@ export default function ChatPage() {
         <ChatSidebar
           darkMode={darkMode}
           recentConversations={recentConversations}
-          currentSessionId={id}
+          currentSessionId={currentSessionId}
           startNewChat={startNewChat}
         />
         <div className="flex flex-col flex-1 p-4 !pt-20 sm:p-6">
