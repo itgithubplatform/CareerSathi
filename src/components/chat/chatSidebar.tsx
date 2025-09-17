@@ -6,7 +6,7 @@ import { useState } from "react";
 export default function ChatSidebar({ darkMode, recentConversations, currentSessionId, startNewChat }:{
   darkMode: boolean;
   recentConversations: any[];
-  currentSessionId: string | null;
+  currentSessionId: string | undefined;
   startNewChat: () => void;
 }) {
   const [isSidebarOpen, setSidebarOpen] = useState(false);

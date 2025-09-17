@@ -102,6 +102,11 @@ Guidelines:
               description: project.description,
             })),
           },
+          user:{
+            connect: {
+              id: session.user.id
+            }
+            }
         },
       })
       return NextResponse.json({ reply: `${reply.content}\n\n[View roadmap](/roadmap/${newRoadmap.id})`, title: reply.title});
