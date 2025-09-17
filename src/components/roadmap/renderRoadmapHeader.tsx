@@ -67,7 +67,7 @@ const completedSkills = roadmap.skillsToLearn.filter(skill => skill.done).length
                       <span className="text-sm font-medium">Overall Progress</span>
                       <span className="text-sm text-gray-500">{progressPercentage}%</span>
                     </div>
-                    <Progress value={progressPercentage} className="h-3 " />
+                    <Progress color='' value={progressPercentage} className="h-3 [&>div]:bg-purple-500" />
                   </div>
                   
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">

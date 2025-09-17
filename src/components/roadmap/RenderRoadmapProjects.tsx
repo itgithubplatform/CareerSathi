@@ -6,8 +6,58 @@ import { Badge } from '../ui/badge'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '../ui/button'
 import { CheckCircle, Circle } from 'lucide-react'
+import { roadmapAtom } from '@/lib/atom'
+import { useAtom } from 'jotai'
 
 export default function RenderRoadmapProjects({itemVariants, roadmap,containerVariants}:{itemVariants: Variants, roadmap: Roadmap, containerVariants:Variants}) {
+  const [roadmapStore, setRoadmapStore] = useAtom(roadmapAtom) 
+
+  const handleSkillDone = async(id:string)=>{
+    try {
+       const projects = roadmap.recommendedProjects.map(project=>{
+          if (project.id === id) {
+            project.done = true
+          }
+          return project
+        })
+        setRoadmapStore({
+          ...roadmap,
+          recommendedProjects: projects
+        })
+        const res = await fetch("/api/roadmap/update-project", {
+          method: "POST",
+          body: JSON.stringify({
+            roadmapId: roadmap.id,
+            projectId: id
+          })
+        })
+        if (!res.ok) {
+          const projects = roadmap.recommendedProjects.map(project=>{
+          if (project.id === id) {
+            project.done = false
+          }
+          return project
+        })
+        setRoadmapStore({
+          ...roadmap,
+          recommendedProjects: projects
+        })
+        }
+    } catch (error) {
+      console.log(error);
+      
+      const projects = roadmap.recommendedProjects.map(project=>{
+          if (project.id === id) {
+            project.done = false
+          }
+          return project
+        })
+        setRoadmapStore({
+          ...roadmap,
+          recommendedProjects: projects
+        })
+    }
+  }
   return (
     <motion.div variants={itemVariants}>
         <Card>
@@ -43,7 +93,7 @@ export default function RenderRoadmapProjects({itemVariants, roadmap,containerVa
                   >
                     <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-3">
                       <div>
-                        <h3 className={`font-semibold ${project.done ? 'line-through text-green-700' : ''}`}>
+                        <h3 className={`font-semibold ${project.done ? ' text-green-700' : ''}`}>
                           #{index + 1}. {project.title}
                         </h3>
                         <p className="text-gray-600 text-sm mt-1">{project.description}</p>
@@ -51,6 +101,7 @@ export default function RenderRoadmapProjects({itemVariants, roadmap,containerVa
                       <Button
                         variant={project.done ? "outline" : "default"}
                         size="sm"
+                        onClick={() => handleSkillDone(project.id)}
                         className={project.done ? "bg-white text-green-700 border-green-300 shrink-0" : "bg-gradient-to-r from-blue-500 to-purple-500 text-white"}
                       >
                         {project.done ? (

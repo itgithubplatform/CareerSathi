@@ -1,10 +1,12 @@
 "use client";
-import React from 'react'
+import React, { useEffect } from 'react'
 import { motion, Variants } from 'framer-motion';
 import { Roadmap } from '@/types/roadmap';
 import RenderRoadmapHeader from './renderRoadmapHeader';
 import RenderRoadmapSkills from './renderRoadmapSkills';
 import RenderRoadmapProjects from './RenderRoadmapProjects';
+import { useAtom } from 'jotai';
+import { roadmapAtom } from '@/lib/atom';
 
 const containerVariants:Variants = {
   hidden: { opacity: 0 },
@@ -41,7 +43,13 @@ const cardVariants:Variants = {
 };
 
 export default function RenderRoadmap({ roadmap }: { roadmap: Roadmap }) {
- 
+  const [roadmapStore, setRoadmapStore] = useAtom(roadmapAtom)
+ useEffect(() => {
+   setRoadmapStore(roadmap)
+ },[])
+ if (!roadmapStore) {
+  return
+ }
   return (
     <motion.div
       initial="hidden"
@@ -50,7 +58,7 @@ export default function RenderRoadmap({ roadmap }: { roadmap: Roadmap }) {
       className="max-w-6xl mx-auto p-4 md:p-6 space-y-6 md:space-y-8"
     >
       {/* Header Card */}
-      <RenderRoadmapHeader itemVariants={itemVariants} cardVariants={cardVariants} roadmap={roadmap} />
+      <RenderRoadmapHeader itemVariants={itemVariants} cardVariants={cardVariants} roadmap={roadmapStore} />
       {/* Skills Section */}
       <RenderRoadmapSkills itemVariants={itemVariants} roadmap={roadmap} containerVariants={containerVariants} />
       {/* Projects Section */}
