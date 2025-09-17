@@ -89,13 +89,14 @@ model Project {
   id String @id @default(cuid())
   title String
   description String
+  done Boolean  @default(false)
   roadmapId String
   roadmap Roadmap @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
 }
 model SkillToLearn {
   id String @id @default(cuid())
   skill String
-  done Boolean
+  done Boolean  @default(false)
   roadmapId String
   roadmap Roadmap @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
 }

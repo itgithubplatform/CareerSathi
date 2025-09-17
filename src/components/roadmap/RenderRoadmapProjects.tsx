@@ -1,0 +1,82 @@
+import React from 'react'
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
+import { Variants } from 'framer-motion'
+import { Roadmap } from '@/types/roadmap'
+import { Badge } from '../ui/badge'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Button } from '../ui/button'
+import { CheckCircle, Circle } from 'lucide-react'
+
+export default function RenderRoadmapProjects({itemVariants, roadmap,containerVariants}:{itemVariants: Variants, roadmap: Roadmap, containerVariants:Variants}) {
+  return (
+    <motion.div variants={itemVariants}>
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              Recommended Projects
+              <Badge variant="secondary" className="ml-2">
+                {roadmap.recommendedProjects.length}
+              </Badge>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <motion.div 
+              variants={containerVariants}
+              className="space-y-4"
+            >
+              <AnimatePresence>
+                {roadmap.recommendedProjects.map((project, index) => (
+                  <motion.div
+                    key={project.id}
+                    variants={itemVariants}
+                    layout
+                    whileHover={{y: -3}}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.1 }}
+                    className={`p-4 rounded-lg shadow-sm hover:shadow-lg border-2 ${
+                      project.done 
+                        ? 'border-green-200 bg-green-50' 
+                        : 'border-gray-200'
+                    }`}
+                  >
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-3">
+                      <div>
+                        <h3 className={`font-semibold ${project.done ? 'line-through text-green-700' : ''}`}>
+                          #{index + 1}. {project.title}
+                        </h3>
+                        <p className="text-gray-600 text-sm mt-1">{project.description}</p>
+                      </div>
+                      <Button
+                        variant={project.done ? "outline" : "default"}
+                        size="sm"
+                        className={project.done ? "bg-white text-green-700 border-green-300 shrink-0" : "bg-gradient-to-r from-blue-500 to-purple-500 text-white"}
+                      >
+                        {project.done ? (
+                          <>
+                            <CheckCircle size={16} className="mr-1" />
+                            Completed
+                          </>
+                        ) : (
+                          <>
+                            <Circle size={16} className="mr-1" />
+                            Mark Complete
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      <Badge variant="outline" className="text-xs">
+                        {project.done ? "Completed" : "In Progress"}
+                      </Badge>
+                    </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </motion.div>
+          </CardContent>
+        </Card>
+      </motion.div>
+  )
+}
