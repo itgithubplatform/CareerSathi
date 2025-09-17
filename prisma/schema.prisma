@@ -48,6 +48,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   roadmap       Roadmap[]
+  dailyQuestions DailyQuestion[]
   profile       UserProfile?
 }
 
@@ -99,4 +100,13 @@ model SkillToLearn {
   done Boolean  @default(false)
   roadmapId String
   roadmap Roadmap @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
+}
+model DailyQuestion {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  questionText String
+  createdAt    DateTime @default(now())
+  expiresAt    DateTime 
+  isAnswered   Boolean  @default(false)
 }

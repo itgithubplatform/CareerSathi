@@ -6,8 +6,57 @@ import { Badge } from '../ui/badge'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '../ui/button'
 import { CheckCircle, Circle } from 'lucide-react'
+import { useAtom } from 'jotai'
+import { roadmapAtom } from '@/lib/atom'
 
 export default function RenderRoadmapSkills({itemVariants, roadmap,containerVariants}:{itemVariants: Variants, roadmap: Roadmap, containerVariants:Variants}) {
+  const [roadmapStore, setRoadmapStore] = useAtom(roadmapAtom)
+  const handleSkillDone = async(id:string)=>{
+    try {
+       const skills = roadmap.skillsToLearn.map(skill=>{
+          if (skill.id === id) {
+            skill.done = true
+          }
+          return skill
+        })
+        setRoadmapStore({
+          ...roadmap,
+          skillsToLearn: skills
+        })
+        const res = await fetch("/api/roadmap/update-skill", {
+          method: "POST",
+          body: JSON.stringify({
+            roadmapId: roadmap.id,
+            skillId: id
+          })
+        })
+        if (!res.ok) {
+          const skills = roadmap.skillsToLearn.map(skill=>{
+          if (skill.id === id) {
+            skill.done = false
+          }
+          return skill
+        })
+        setRoadmapStore({
+          ...roadmap,
+          skillsToLearn: skills
+        })
+        }
+    } catch (error) {
+      console.log(error);
+      
+      const skills = roadmap.skillsToLearn.map(skill=>{
+          if (skill.id === id) {
+            skill.done = false
+          }
+          return skill
+        })
+        setRoadmapStore({
+          ...roadmap,
+          skillsToLearn: skills
+        })
+    }
+  }
   return (
     <motion.div variants={itemVariants}>
         <Card>
@@ -43,13 +92,14 @@ export default function RenderRoadmapSkills({itemVariants, roadmap,containerVari
                   >
                     <div className="flex items-center gap-3 flex-1">
                       <span className="text-sm text-gray-500 font-mono w-6">#{index + 1}</span>
-                      <span className={skill.done ? 'line-through text-green-700' : ''}>
+                      <span className={skill.done ? ' text-green-700' : ''}>
                         {skill.skill}
                       </span>
                     </div>
                     <Button
                       variant={skill.done ? "outline" : "default"}
                       size="sm"
+                      onClick={() => handleSkillDone(skill.id)}
                       className={skill.done ? "bg-white text-green-700 border-green-300" : "bg-gradient-to-r from-blue-500 to-purple-500 text-white"}
                     >
                       {skill.done ? (

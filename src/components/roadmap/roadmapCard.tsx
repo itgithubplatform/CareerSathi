@@ -93,7 +93,7 @@ export default function RoadmapCard({ roadmap, index }: { roadmap: Roadmap, inde
               <span className="text-xs text-gray-500">Progress</span>
               <span className="text-xs text-gray-500">{progress}%</span>
             </div>
-            <Progress value={progress} className="h-2" />
+            <Progress value={progress} className="h-2 [&>div]:bg-[#3b82f6]" />
           </div>
         </CardContent>
       </Card>

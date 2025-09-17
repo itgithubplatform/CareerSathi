@@ -1,8 +1,8 @@
 import Header from '@/components/layout/Header'
-import JobsHeader from '@/components/sections/jobsHeader'
-import JobsTrendingCatagory from '@/components/sections/jobsTrendingCatagory'
-import JobsRecommendation from '@/components/sections/jobsRecommendation'
-import JobsSearchResults from '@/components/sections/jobsSearchResults'
+import JobsHeader from '@/components/jobs/jobsHeader'
+import JobsTrendingCatagory from '@/components/jobs/jobsTrendingCatagory'
+import JobsRecommendation from '@/components/jobs/jobsRecommendation'
+import JobsSearchResults from '@/components/jobs/jobsSearchResults'
 import Footer from '@/components/layout/Footer'
 import { getRecommendedJobs } from '@/lib/getRecommendedJobs'
 
@@ -32,7 +32,7 @@ export default async function page({ searchParams }: { searchParams: any }) {
                 </>
             )
         } else {
-            const jobArr = await getRecommendedJobs(["js"])
+            const jobArr = await getRecommendedJobs()
             return (
                 <>
                     <div className='min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-6 pt-28'>
