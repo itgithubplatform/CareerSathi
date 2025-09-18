@@ -43,7 +43,6 @@ try {
   console.log(roadmap);
   
 
-  // If roadmap doesn't exist or doesn't belong to user
   if (!roadmap) {
     notFound();
   }

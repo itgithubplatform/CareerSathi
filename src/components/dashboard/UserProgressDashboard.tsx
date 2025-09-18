@@ -1,5 +1,4 @@
 "use client";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import {
@@ -10,6 +9,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { motion } from "framer-motion";
 
 export default function UserProgressDashboard() {
   const [data, setData] = useState([]);
@@ -31,15 +31,16 @@ export default function UserProgressDashboard() {
   }, []);
 
   return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
     <Card className="rounded-2xl bg-white/50 shadow-lg p-2">
       <CardHeader className="pl-6">
         <CardTitle className="text-lg font-medium">
           Total Questions Answered:
         </CardTitle>
-        <div className="text-3xl font-bold ml-2">{total.toLocaleString()}<span className="text-sm font-medium"> upto 1 month.</span></div>
+        <div className="text-3xl font-bold ml-2">{total.toLocaleString()}<span className="text-sm font-medium"> (Last 30 Days).</span></div>
       </CardHeader>
       <CardContent>
-        <ResponsiveContainer width="100%" height={260}>
+        <ResponsiveContainer width="100%" height={269}>
           <BarChart
             data={data}
             margin={{ top: 10, right: 10, left: -25, bottom: 0 }}
@@ -77,5 +78,6 @@ export default function UserProgressDashboard() {
         </ResponsiveContainer>
       </CardContent>
     </Card>
+    </motion.div>
   );
 }
