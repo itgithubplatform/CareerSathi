@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { ChatMessage } from "@/types/chat";
+import Link from "next/link";
 
 export default function MessageBubble({ msg }: { msg: ChatMessage }) {
   const isUser = msg.role === "user";
@@ -28,9 +29,9 @@ export default function MessageBubble({ msg }: { msg: ChatMessage }) {
             strong: ({ children }) => <strong className="font-bold">{children}</strong>,
             em: ({ children }) => <em className="italic">{children}</em>,
             a: ({ children, href }) => (
-              <a href={href} className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">
+              <Link href={href||"/roadmap"} className="text-blue-600 bg-blue-50 hover:scale-105 transition-all duration-200 hover:bg-blue-100 p-2 border border-blue-400 rounded-lg" rel="noopener noreferrer">
                 {children}
-              </a>
+              </Link>
             ),
           }} remarkPlugins={[remarkGfm]}>{msg.text}</ReactMarkdown>}
     </motion.div>
