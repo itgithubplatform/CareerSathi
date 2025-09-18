@@ -9,6 +9,10 @@ import Header from '@/components/layout/Header'
 import { chats, getRandomGreeting, recommendedJobs } from '@/lib/constants'
 import { careerTasks } from '@/lib/constants'
 import Link from 'next/link'
+import UserProgressDashboard from '@/components/dashboard/UserProgressDashboard'
+import DailyQuestions from '@/components/dashboard/dailyQuestions'
+import TodaysGoal from '@/components/dashboard/todaysGoal'
+import QuickActions from '@/components/dashboard/quickActions'
 
 
 export default function DashboardPage() {
@@ -17,71 +21,11 @@ export default function DashboardPage() {
   const [tasks, setTasks] = useState(careerTasks);
   const [greeting, setGreeting] = useState('');
   const [supportText, setSupportText] = useState('');
-  const [questions, setQuestions] = useState<any>();
-  const getQuestions = async () => {
-    try {
-      const response = await fetch('/api/questions', {
-        method: 'GET',
-      });
-      const data = await response.json();
-      console.log(data);
-      
-      setQuestions(data.questions);
-    } catch (error) {
-      console.error('Error fetching questions:', error);
-    }
-  }
-  useEffect(()=>{
-    const { greeting, supportText } = getRandomGreeting()
-    setGreeting(greeting)
-    setSupportText(supportText)
-    getQuestions()
-  },[])
-  const toggleDone = async(id: string) => {
-    try {
-      const updatedQuestions = questions.map((question: any) => {
-        if (question.id === id) {
-          return {
-            ...question,
-            isAnswered: true,
-          };
-        }
-        return question;
-      })
-      setQuestions(updatedQuestions);
-      const response = await fetch('/api/questions/mark-as-answered', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ questionId: id }),
-      });
-      if (!response.ok) {
-        const updatedQuestions = questions.map((question: any) => {
-      if (question.id === id) {
-        return {
-          ...question,
-          isAnswered: false,
-        };
-      }
-      return question;
-    })
-    setQuestions(updatedQuestions);
-        
-      }
-    } catch (error) {
-      const updatedQuestions = questions.map((question: any) => {
-      if (question.id === id) {
-        return {
-          ...question,
-          isAnswered: false,
-        };
-      }
-      return question;
-    })
-    setQuestions(updatedQuestions);
-    }
-  };
+ useEffect(()=>{
+        const { greeting, supportText } = getRandomGreeting()
+        setGreeting(greeting)
+        setSupportText(supportText)
+      },[])
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.push('/auth/signin')
@@ -124,186 +68,20 @@ export default function DashboardPage() {
           </motion.div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {/* Today's Challenges */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="bg-white rounded-xl p-6 mb-8 shadow-lg "
-            >
-              <h2 className="text-xl font-semibold px-3 text-gray-900 mb-6">
-                Today's challenges
-              </h2>
-              <div className="flex flex-col gap-3 h-[21rem] overflow-y-auto">
-                {!questions?<div className='flex items-center justify-center h-full w-full'><motion.div
-                            animate={{ rotate: 360 }}
-                            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                            className="w-12 h-12 rounded-full border-4 border-blue-500 border-t-transparent"
-                          /></div>:questions.length > 0 && questions.some((question: any) => !question.isAnswered) ? (
-                  <AnimatePresence>
-                    {questions.map(
-                      (question: any, index: number) =>
-                        !question.isAnswered && (
-                          <motion.div
-                            onClick={() => toggleDone(question.id)}
-                            key={index}
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: 20 }}
-                            transition={{ delay: index * 0.1 }}
-                            className="flex items-center justify-between bg-gray-50 p-3 rounded-lg hover:bg-gray-100 hover:cursor-pointer"
-                          >
-                            <span className="text-gray-800">{question.questionText}</span>
-                            <button
-                              className="flex items-center gap-2 p-1 rounded-full bg-gray-200 hover:bg-blue-500 hover:text-white transition-colors duration-200"
-                            >
-                              <Circle size={18} />
-                            </button>
-                          </motion.div>
-                        )
-                    )}
-                  </AnimatePresence>
-                ) : (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.2 }}
-                    className="p-6 text-green-700 rounded-lg text-center font-semibold"
-                  >
-                    Amazing! You've completed all your challenges today!
-                  </motion.div>
-                )}
-              </div>
-            </motion.div>
+            <div className="flex flex-col gap-6 ">
+            <UserProgressDashboard />
+              <QuickActions />
+            </div>
+            <div className="grid grid-cols-1 gap-6 ">
+             <TodaysGoal />
+            <DailyQuestions />
+            </div>
 
             {/* Goals + Jobs */}
-            <div className="grid grid-cols-1 gap-6 ">
               {/* Today's Goal */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="bg-white rounded-xl p-6 h-36 shadow-lg"
-              >
-                <div className="flex justify-between">
-                  <h2 className="text-xl font-semibold text-gray-900 mb-6">
-                    Today's Goal!
-                  </h2>
-                  <p className="text-gray-600 text-sm">
-                    {questions?.filter((q: any) => q.isAnswered).length}/{questions?.length} tasks
-                  </p>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2 ">
-                  <div
-                    className="bg-blue-500 h-2 rounded-full transition-all duration-300"
-                    style={{
-                      width: `${(questions?.filter((q: any) => q.isAnswered).length / questions?.length) *
-                        100
-                        }%`,
-                    }}
-                  ></div>
-                </div>
-                <p className="mt-3 text-sm text-gray-600">
-                  You're doing great. Keep it up!
-                </p>
-              </motion.div>
-
-              {/* Recommended Jobs */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="bg-white rounded-xl p-6  mb-8 shadow-lg "
-              >
-                <div className="flex justify-between items-center mb-4">
-                  <div className="flex items-center justify-between w-full">
-                    <h2 className="text-xl font-semibold text-gray-900">
-                      Recommended Jobs
-                    </h2>
-                    <Link href="/jobs" className="text-sm px-4 py-1 font-medium text-blue-600 hover:text-blue-800 hover:underline transition-colors">
-                      See more
-                    </Link>
-                  </div>
-                </div>
-                <div className="flex gap-3 w-full overflow-x-auto p-2">
-                  {recommendedJobs.map((job, idx) => (
-                    <div
-                      key={idx}
-                      className="border border-gray-200 rounded-lg p-3 hover:bg-gray-50 transition w-48 transform hover:-translate-y-1 hover:shadow-lg"
-                    >
-                      <h3 className="font-medium text-gray-900">{job?.title}</h3>
-                      <p className="text-sm text-gray-600">{job?.company}</p>
-                      <div className="flex gap-2 mt-6">
-                        {job?.tags.map((tag, i) => (
-                          <span
-                            key={i}
-                            className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs rounded-full"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            </div>
-          </div>
           {/* Quick Actions */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="bg-white rounded-xl p-6 shadow-lg "
-            >
-              <h2 className='text-xl font-semibold text-gray-900 mb-6'>Recent Chats</h2>
-              <div className="space-y-3 max-h-60 pb-3 overflow-y-auto">
-                {chats.map((chat, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all duration-300 cursor-pointer hover:shadow-lg hover:-translate-y-1"
-                  >
-                    <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-gray-200">
-                      <Bot size={20} className="text-gray-600" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-800">{chat.title}</p>
-                      <p className="text-xs text-gray-500">{chat.subtitle}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="bg-white rounded-xl p-6 shadow-lg"
-            >
-              <h2 className='text-xl font-semibold text-gray-900 mb-6'>Quick Actions</h2>
-              <div className="flex gap-3 flex-wrap">
-                <Link href="/jobs" className="flex items-center gap-2 p-2 px-4 rounded-xl bg-blue-500 text-white text-sm font-semibold hover:scale-105 shadow-md hover:shadow-xl transition-all duration-200">
-                  <Briefcase size={16} />
-                  Explore Jobs
-                </Link>
-                <button className="flex items-center gap-2 p-2 px-4 rounded-xl border border-blue-400 text-blue-600 bg-blue-50 text-sm font-medium hover:bg-blue-100 hover:scale-105 transition-all duration-200">
-                  <User size={16} />
-                  Update Profile
-                </button>
-                <button className="flex items-center gap-2 p-2 px-4 rounded-xl border border-blue-400 text-blue-600 bg-blue-50 text-sm font-medium hover:bg-blue-100 hover:scale-105 transition-all duration-200">
-                  <FileText size={16} />
-                  Update Resume
-                </button>
-                <button onClick={e=>router.push('/chat')} className="flex items-center gap-2 p-2 px-4 rounded-xl border border-blue-400 text-blue-600 bg-blue-50 text-sm font-medium hover:bg-blue-100 hover:scale-105 transition-all duration-200">
-                  <Bot size={16} />
-                  Chat with AI Mentor
-                </button>
-              </div>
-
-            </motion.div>
           </div>
-
+          
           {/* Main Content Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Career Roadmap */}
