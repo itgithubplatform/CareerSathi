@@ -4,29 +4,46 @@ import { questionsAtom } from '@/lib/atom'
 import { useAtom } from 'jotai' 
 import { motion } from 'framer-motion'
 
-const motivationalMessages = [
-  "You're doing great. Keep it up!",
-  "Nice work! Stay consistent 🔥",
-  "Every step counts — you're moving forward.",
-  "Solid progress! Keep pushing 🚀",
-  "You're smashing your goals today!",
-  "Momentum is on your side 💡",
-  "Impressive focus! Stay locked in.",
-  "Small wins add up — you’re proving it!",
-  "You’re on fire today 🔥",
-  "Crushing it! Keep going strong."
-]
+const messages = {
+  start: [
+    "Let’s get rolling! 🚀",
+    "A fresh start — time to crush it 💪",
+    "One step at a time. Begin strong!",
+  ],
+  mid: [
+    "Great progress so far — keep going 🔥",
+    "Nice momentum! Stay consistent ⚡",
+    "Halfway there. You’ve got this 💡",
+  ],
+  near: [
+    "Almost done — finish strong! 🏁",
+    "Final push — don’t stop now 👊",
+    "You’re so close, keep grinding 🔥",
+  ],
+  done: [
+    "🎉 Goal complete! Amazing work.",
+    "You crushed it today 💯",
+    "Another win in the bag — respect 👏",
+  ],
+}
 
 export default function TodaysGoal() {
   const [questions] = useAtom(questionsAtom);
-  const randomMessage = useMemo(() => {
-    const index = Math.floor(Math.random() * motivationalMessages.length);
-    return motivationalMessages[index];
-  }, []);
 
   const answered = questions?.filter((q: any) => q.isAnswered).length || 0;
   const total = questions?.length || 1; 
   const progress = (answered / total) * 100;
+  const randomMessage = useMemo(() => {
+    let category: keyof typeof messages;
+
+    if (progress === 0) category = "start";
+    else if (progress < 50) category = "mid";
+    else if (progress < 100) category = "near";
+    else category = "done";
+
+    const pool = messages[category];
+    return pool[Math.floor(Math.random() * pool.length)];
+  }, [progress]);
 
   return (
     <motion.div

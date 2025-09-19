@@ -3,6 +3,10 @@ import { authOptions } from "./auth";
 import { prisma } from "./prisma";
 import { askVertex } from "./vertex";
 
+const jobCache: Map<string, { data: any[]; expiry: number }> = new Map();
+
+const CACHE_TTL = 72 * 60 * 60 * 1000;
+
 export const getRecommendedJobs = async () => {
   try {
     const session = await getServerSession(authOptions);
@@ -10,16 +14,20 @@ export const getRecommendedJobs = async () => {
       throw new Error("User not authenticated");
     }
 
+    const userId = session.user.id;
+
+    // 🔹 Step 1: Check cache
+    const cached = jobCache.get(userId);
+    if (cached && Date.now() < cached.expiry) {
+      return cached.data;
+    }
+
     const roadmap = await prisma.roadmap.findMany({
-      where: {
-        userId: session.user.id,
-      },
-      include: {
-        skillsToLearn: true,
-      },
+      where: { userId },
+      include: { skillsToLearn: true },
     });
 
-    const keyWords = roadmap.flatMap((roadmap) => 
+    const keyWords = roadmap.flatMap((roadmap) =>
       roadmap.skillsToLearn.map((skill) => skill.skill)
     );
 
@@ -49,12 +57,13 @@ For skills [UI/UX Design, Figma, Adobe Creative Suite] return:
 "Digital Content Creator,Marketing Coordinator,Product Support Specialist,Junior Design Associate,Customer Experience Assistant"
 
 Generate diverse search terms that leverage technical skills in broader roles:`;
+
     const aiReply = await askVertex(prompt);
-    
+
     const params = aiReply
       .split(",")
-      .map(param => param.trim())
-      .filter(param => param && param !== "undefined" && param.length > 2)
+      .map((param) => param.trim())
+      .filter((param) => param && param.length > 2)
       .slice(0, 5);
 
     if (params.length === 0) {
@@ -66,7 +75,11 @@ Generate diverse search terms that leverage technical skills in broader roles:`;
         try {
           const encodedParam = encodeURIComponent(param);
           const res = await fetch(
-            `https://api.adzuna.com/v1/api/jobs/in/search/1?app_id=${process.env.JOB_API_APP_ID}&app_key=${process.env.JOB_API_APP_KEY}&what=${encodedParam}&where=India&content-type=application/json&max_days_old=30`,
+            `https://api.adzuna.com/v1/api/jobs/in/search/1?app_id=${
+              process.env.JOB_API_APP_ID
+            }&app_key=${
+              process.env.JOB_API_APP_KEY
+            }&what=${encodedParam}&where=India&content-type=application/json&max_days_old=30`,
             { next: { revalidate: 86400 } }
           );
 
@@ -83,16 +96,21 @@ Generate diverse search terms that leverage technical skills in broader roles:`;
 
     const allJobs = jobs.flat();
 
-    const uniqueJobs = allJobs.filter((job, index, self) =>
-      index === self.findIndex(j => j.id === job.id || j.title === job.title)
+    const uniqueJobs = allJobs.filter(
+      (job, index, self) =>
+        index === self.findIndex(
+          (j) => j.id === job.id || j.title === job.title
+        )
     );
 
-    const randomJobs = uniqueJobs
-      .sort(() => Math.random() - 0.5)
-      .slice(0, 10);
+    const randomJobs = uniqueJobs.sort(() => Math.random() - 0.5).slice(0, 10);
+
+    jobCache.set(userId, {
+      data: randomJobs,
+      expiry: Date.now() + CACHE_TTL,
+    });
 
     return randomJobs;
-
   } catch (error) {
     console.error("Error in getRecommendedJobs:", error);
     throw error;

@@ -62,7 +62,7 @@ export default function ChatPage() {
 
       await saveChatMessage(userId, sessionId, "user", userMessage.text);
 
-      const history = [...messages, userMessage].map((m) => ({ role: m.role, text: m.text }));
+      const history = [...messages, userMessage].slice(-30).map((m) => ({ role: m.role, text: m.text }));
       const res = await fetch("/api/careersathi", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
