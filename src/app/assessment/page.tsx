@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronRight, ChevronLeft, User, Heart, Brain, Sparkles, CheckCircle } from 'lucide-react'
-import Stage1Identity from '@/components/assessment/Stage1Identity'
+
 import Stage2Interests from '@/components/assessment/Stage2Interests'
 import Stage3Skills from '@/components/assessment/Stage3Skills'
 import AssessmentResults from '@/components/assessment/AssessmentResults'
@@ -103,11 +103,13 @@ export default function AssessmentPage() {
     switch (currentStage) {
       case 1:
         return (
-          <Stage1Identity
-            data={assessmentData}
-            onUpdate={updateAssessmentData}
-            onNext={nextStage}
-          />
+          <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100 text-center">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Assessment Coming Soon</h2>
+            <p className="text-gray-600 mb-6">The comprehensive assessment system is being prepared.</p>
+            <button onClick={nextStage} className="btn-primary">
+              Continue to Interests
+            </button>
+          </div>
         )
       case 2:
         return (

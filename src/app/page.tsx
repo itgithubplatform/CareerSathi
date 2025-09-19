@@ -12,8 +12,7 @@ import StatsCounter from '@/components/ui/StatsCounter'
 
 const fadeInUp = {
   initial: { opacity: 0, y: 60 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6 }
+  animate: { opacity: 1, y: 0 }
 }
 
 const staggerContainer = {
@@ -136,7 +135,10 @@ export default function HomePage() {
                 Get Started Free
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
-              <Link href="/assessment" className="btn-secondary">
+              <Link href="/how-it-helps" className="btn-secondary">
+                How It Helps
+              </Link>
+              <Link href="/assessment" className="px-6 py-3 text-blue-600 hover:text-blue-700 font-medium transition-colors">
                 Take Assessment
               </Link>
             </motion.div>
@@ -170,9 +172,26 @@ export default function HomePage() {
         <div className="absolute bottom-20 left-1/4 w-12 h-12 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full opacity-20 animate-bounce-slow"></div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-16 bg-white/50 backdrop-blur-sm">
+      {/* About Section */}
+      <section id="about" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold font-display mb-6 text-gradient">
+              About CareerSathi
+            </h2>
+            <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+              CareerSathi is India's first AI-powered career advisor designed specifically for students and professionals. 
+              We understand the unique challenges of the Indian education system, family expectations, and job market dynamics. 
+              Our mission is to democratize career guidance and make personalized mentorship accessible to every Indian student.
+            </p>
+          </motion.div>
+          
           <motion.div
             variants={staggerContainer}
             initial="initial"
@@ -188,12 +207,12 @@ export default function HomePage() {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-20 bg-gradient-to-br from-white to-blue-50">
+      <section id="features" className="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            variants={fadeInUp}
-            initial="initial"
-            whileInView="animate"
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
             viewport={{ once: true }}
             className="text-center mb-16"
           >
@@ -220,59 +239,161 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* How It Works Section */}
-      <section className="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
+      {/* Your Journey to Success Section */}
+      <section id="how-it-works" className="py-20 bg-gradient-to-br from-purple-50 to-pink-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            variants={fadeInUp}
-            initial="initial"
-            whileInView="animate"
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
             viewport={{ once: true }}
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-bold font-display mb-6 text-gradient">
-              How It Works
+              Your Journey to Success
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Get personalized career guidance in three simple steps
+            <p className="text-xl text-gray-600 max-w-4xl mx-auto">
+              From confusion to clarity, from dreams to reality. Experience the complete transformation process that has helped 50,000+ students find their perfect career path.
             </p>
           </motion.div>
           
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                step: "01",
-                title: "Complete Your Profile",
-                description: "Share your interests, skills, educational background, and career aspirations with our intelligent assessment system."
-              },
-              {
-                step: "02",
-                title: "AI Analysis",
-                description: "Our advanced AI analyzes your profile against current market trends and opportunities in the Indian job market."
-              },
-              {
-                step: "03",
-                title: "Get Your Roadmap",
-                description: "Receive a personalized career roadmap with specific skills to develop and actionable steps to achieve your goals."
-              }
-            ].map((item, index) => (
-              <motion.div
-                key={index}
-                variants={fadeInUp}
-                initial="initial"
-                whileInView="animate"
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.2 }}
-                className="text-center"
-              >
-                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-6">
-                  {item.step}
-                </div>
-                <h3 className="text-xl font-semibold mb-4">{item.title}</h3>
-                <p className="text-gray-600">{item.description}</p>
-              </motion.div>
-            ))}
+          {/* Interactive Journey Flow */}
+          <div className="relative">
+            {/* Journey Path Line */}
+            <div className="hidden md:block absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 transform -translate-y-1/2 z-0"></div>
+            
+            <div className="grid md:grid-cols-5 gap-8 relative z-10">
+              {[
+                {
+                  phase: "Discovery",
+                  title: "Smart Assessment",
+                  description: "22-question AI assessment covering personality, skills, interests, and goals",
+                  icon: "🎯",
+                  color: "from-blue-500 to-blue-600",
+                  features: ["Personality Analysis", "Skill Mapping", "Interest Profiling"]
+                },
+                {
+                  phase: "Analysis",
+                  title: "AI Processing",
+                  description: "Google Cloud Vertex AI analyzes your profile against 200+ career paths and market data",
+                  icon: "🤖",
+                  color: "from-purple-500 to-purple-600",
+                  features: ["Market Analysis", "Skill Gap Detection", "Career Matching"]
+                },
+                {
+                  phase: "Recommendation",
+                  title: "Personalized Results",
+                  description: "Get 3-5 career matches with detailed roadmaps, salary insights, and growth potential",
+                  icon: "📊",
+                  color: "from-green-500 to-green-600",
+                  features: ["Career Matches", "Salary Insights", "Growth Projections"]
+                },
+                {
+                  phase: "Planning",
+                  title: "Action Roadmap",
+                  description: "Step-by-step learning path with courses, projects, and milestones tailored for you",
+                  icon: "🗺️",
+                  color: "from-orange-500 to-orange-600",
+                  features: ["Learning Path", "Project Ideas", "Skill Development"]
+                },
+                {
+                  phase: "Success",
+                  title: "Continuous Support",
+                  description: "24/7 AI mentor, progress tracking, and career guidance as you grow and evolve",
+                  icon: "🚀",
+                  color: "from-pink-500 to-pink-600",
+                  features: ["AI Mentoring", "Progress Tracking", "Career Updates"]
+                }
+              ].map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 60 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.15 }}
+                  viewport={{ once: true }}
+                  whileHover={{ y: -10, scale: 1.02 }}
+                  className="relative"
+                >
+                  {/* Journey Node */}
+                  <div className="bg-white rounded-2xl p-6 shadow-xl border border-gray-100 hover:shadow-2xl transition-all duration-300 relative">
+                    {/* Phase Badge */}
+                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                      <span className={`px-3 py-1 bg-gradient-to-r ${item.color} text-white text-xs font-semibold rounded-full shadow-lg`}>
+                        {item.phase}
+                      </span>
+                    </div>
+                    
+                    {/* Icon */}
+                    <div className="text-4xl mb-4 text-center">{item.icon}</div>
+                    
+                    {/* Content */}
+                    <h3 className="text-lg font-bold text-gray-900 mb-3 text-center">{item.title}</h3>
+                    <p className="text-sm text-gray-600 mb-4 text-center leading-relaxed">{item.description}</p>
+                    
+                    {/* Features */}
+                    <div className="space-y-2">
+                      {item.features.map((feature, idx) => (
+                        <div key={idx} className="flex items-center text-xs text-gray-700">
+                          <div className={`w-2 h-2 bg-gradient-to-r ${item.color} rounded-full mr-2 flex-shrink-0`}></div>
+                          <span>{feature}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* Connection Arrow (Desktop) */}
+                  {index < 4 && (
+                    <div className="hidden md:block absolute top-1/2 -right-4 transform -translate-y-1/2 z-20">
+                      <div className={`w-8 h-8 bg-gradient-to-r ${item.color} rounded-full flex items-center justify-center shadow-lg`}>
+                        <ArrowRight className="w-4 h-4 text-white" />
+                      </div>
+                    </div>
+                  )}
+                </motion.div>
+              ))}
+            </div>
           </div>
+          
+          {/* Success Metrics */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.8 }}
+            viewport={{ once: true }}
+            className="mt-16 bg-white rounded-2xl p-8 shadow-xl border border-gray-100"
+          >
+            <h3 className="text-2xl font-bold text-center text-gray-900 mb-8">Journey Success Metrics</h3>
+            <div className="grid md:grid-cols-4 gap-6">
+              {[
+                { metric: "95%", label: "Success Rate", desc: "Students achieve career goals" },
+                { metric: "3-6", label: "Months Average", desc: "Time to career clarity" },
+                { metric: "200+", label: "Career Paths", desc: "Available recommendations" },
+                { metric: "24/7", label: "AI Support", desc: "Always available guidance" }
+              ].map((stat, index) => (
+                <div key={index} className="text-center">
+                  <div className="text-3xl font-bold text-gradient mb-2">{stat.metric}</div>
+                  <div className="font-semibold text-gray-900 mb-1">{stat.label}</div>
+                  <div className="text-sm text-gray-600">{stat.desc}</div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+          
+          {/* Interactive Demo Button */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 1 }}
+            viewport={{ once: true }}
+            className="text-center mt-12"
+          >
+            <Link href="/assessment" className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+              <Sparkles className="w-5 h-5 mr-2" />
+              Start Your Journey Now
+              <ArrowRight className="w-5 h-5 ml-2" />
+            </Link>
+            <p className="text-sm text-gray-600 mt-3">Takes only 10 minutes • Completely free • Instant results</p>
+          </motion.div>
         </div>
       </section>
 
@@ -280,9 +401,9 @@ export default function HomePage() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            variants={fadeInUp}
-            initial="initial"
-            whileInView="animate"
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
             viewport={{ once: true }}
             className="text-center mb-16"
           >
@@ -312,9 +433,9 @@ export default function HomePage() {
       <section className="py-20 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
-            variants={fadeInUp}
-            initial="initial"
-            whileInView="animate"
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
