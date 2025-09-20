@@ -27,17 +27,17 @@ export default function Header({ className }: { className?: string }) {
   const normalNav = [
     { name: 'Home', href: '/' },
     { name: 'Features', href: '/#features' },
-    { name: 'How It Works', href: '/#how-it-works' },
-    { name: 'About', href: '/about' },
-    { name: 'Contact', href: '/contact' },
+    { name: 'How It Helps', href: '/how-it-helps' },
+    { name: 'Your Journey', href: '/#how-it-works' },
+    { name: 'About', href: '/#about' },
   ]
 
   const protectedNav = [
     { name: 'Roadmap', href: '/roadmap' },
     { name: 'Talk to AI Mentor', href: '/chat' },
     { name: 'Jobs', href: '/jobs' },
-    { name: 'About', href: '/about' },
-    { name: 'Contact', href: '/contact' },
+    { name: 'How It Helps', href: '/how-it-helps' },
+    { name: 'About', href: '/#about' },
   ]
 
   // Which nav to show
