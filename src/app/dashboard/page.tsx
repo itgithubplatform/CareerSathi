@@ -63,7 +63,7 @@ export default function DashboardPage() {
           >
             <div>
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                {greeting}, {session.user?.name || session.user?.email?.split("@")[0]}!
+                {greeting}, {session.user?.name?.split(" ")[0] || session.user?.email?.split("@")[0]}!
               </h1>
               <p className="text-gray-600 ml-1">{supportText}</p>
             </div>
@@ -237,7 +237,7 @@ export default function DashboardPage() {
                   <FileText size={16} />
                   Update Resume
                 </button>
-                <button className="flex items-center gap-2 p-2 px-4 rounded-xl border border-blue-400 text-blue-600 bg-blue-50 text-sm font-medium hover:bg-blue-100 hover:scale-105 transition-all duration-200">
+                <button onClick={e=>router.push('/chat')} className="flex items-center gap-2 p-2 px-4 rounded-xl border border-blue-400 text-blue-600 bg-blue-50 text-sm font-medium hover:bg-blue-100 hover:scale-105 transition-all duration-200">
                   <Bot size={16} />
                   Chat with AI Mentor
                 </button>
