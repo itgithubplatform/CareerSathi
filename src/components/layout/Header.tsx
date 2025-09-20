@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, User, LogIn, Users, Sparkles } from 'lucide-react'
 import { useSession, signOut } from 'next-auth/react'
 
-export default function Header() {
+export default function Header({ className }: { className?: string }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const { data: session, status } = useSession()
@@ -45,7 +45,7 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 lg:h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2 group">
+          <Link href="/" className={`${className} flex items-center space-x-2 group`}>
             <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
               <Sparkles className="w-6 h-6 text-white" />
             </div>
@@ -125,11 +125,16 @@ export default function Header() {
       {/* Mobile Menu */}
       <AnimatePresence>
         {isMenuOpen && (
+          <motion.div onClick={(e) =>{
+            setIsMenuOpen(false)}} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className='h-screen bg-black/30'>
+
           <motion.div
+          onClick={(e) =>{
+            e.stopPropagation()}}
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.1 }}
             className="lg:hidden bg-white border-t border-gray-200 shadow-lg"
           >
             <div className="px-4 py-6 space-y-4">
@@ -188,6 +193,7 @@ export default function Header() {
               </div>
             </div>
           </motion.div>
+        </motion.div>
         )}
       </AnimatePresence>
     </motion.header>
