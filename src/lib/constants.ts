@@ -72,7 +72,32 @@ export const timeSupportTexts = [
     ]
   }
 ];
-
+ export const chats = [
+    {
+      title: "AI Mentor",
+      subtitle: "Discussing career options in tech",
+    },
+    {
+      title: "AI Mentor",
+      subtitle: "Exploring different career paths",
+    },
+    {
+      title: "AI Mentor",
+      subtitle: "Discussing career options in tech",
+    },
+    {
+      title: "AI Mentor",
+      subtitle: "Exploring different career paths",
+    },
+    {
+      title: "AI Mentor",
+      subtitle: "Discussing career options in tech",
+    },
+    {
+      title: "AI Mentor",
+      subtitle: "Exploring different career paths",
+    },
+  ];
 export const careerTasks = [
   { text: "Update your LinkedIn profile headline", done: false },
   { text: "Send a connection request to someone in your industry", done: false },
@@ -98,6 +123,8 @@ export const recommendedJobs = [
   ]
 export const getRandomGreeting= ()=>{
    const hour = new Date().getHours();
+   console.log(hour);
+   
   const currentGreeting = timeGreetings.find(greeting => hour >= greeting.start && hour < greeting.end);
   const currentSupportText = timeSupportTexts.find(greeting => hour >= greeting.start && hour < greeting.end);
 
@@ -106,3 +133,11 @@ export const getRandomGreeting= ()=>{
   
   return {greeting:current.messages[Math.floor(Math.random() * current.messages.length)], supportText:currentSupportText.messages[Math.floor(Math.random() * currentSupportText.messages.length)]}
   }
+  function toRoute(text:string) {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")   
+    .replace(/\s+/g, "-")           
+    .replace(/-+/g, "-")           
+    .replace(/^-|-$/g, "");        
+}
