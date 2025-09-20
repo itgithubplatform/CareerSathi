@@ -129,17 +129,14 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
+              className="flex flex-col sm:flex-row gap-4 sm:gap-8 justify-center items-center mb-12"
             >
               <Link href="/auth/signup" className="btn-primary group">
                 Get Started Free
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
-              <Link href="/how-it-helps" className="btn-secondary">
+              <Link href="/how-it-helps" className="btn-secondary border-blue-300">
                 How It Helps
-              </Link>
-              <Link href="/assessment" className="px-6 py-3 text-blue-600 hover:text-blue-700 font-medium transition-colors">
-                Take Assessment
               </Link>
             </motion.div>
             

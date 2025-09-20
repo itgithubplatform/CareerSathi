@@ -72,6 +72,7 @@ export default function ChatPage() {
       const data = await res.json();
       if (data.title) {
         const newTitle = data.title.substring(0, 40) + (data.title.length > 40 ? "..." : "");
+        document.title = data.title;
         await updateChatSessionTitle(userId, sessionId, newTitle);
       }
       const botReply = data.reply || "Sorry, I encountered an error.";

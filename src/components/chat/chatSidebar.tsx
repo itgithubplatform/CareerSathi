@@ -55,7 +55,6 @@ const router = useRouter();
               transition={{ duration: 0.1, ease: "easeInOut" }}
               key={conv.id}
               onClick={() => {
-                document.title = conv.title||"New Chat"
                 router.push(`/chat/${conv.id}`)}}
               className={`flex items-center gap-2 py-3 rounded-xl cursor-pointer transition-all hover:shadow-lg px-4 shadow-sm ${currentSessionId === conv.id
                 ? 'bg-indigo-200'

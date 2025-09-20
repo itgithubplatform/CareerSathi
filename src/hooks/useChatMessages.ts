@@ -1,6 +1,5 @@
-"use client";
 import { useEffect, useState } from "react";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { collection, doc, onSnapshot, orderBy, query } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { ChatMessage } from "@/types/chat";
 
@@ -18,8 +17,7 @@ export function useChatMessages(userId: string | undefined, sessionId: string | 
     setLoading(true);
     const messagesRef = collection(db, "users", userId, "sessions", sessionId, "messages");
     const q = query(messagesRef, orderBy("timestamp", "asc"));
-
-    const unsub = onSnapshot(
+    const unsubMessages = onSnapshot(
       q,
       (snapshot) => {
         setMessages(snapshot.docs.map((doc) => doc.data() as ChatMessage));
@@ -31,7 +29,21 @@ export function useChatMessages(userId: string | undefined, sessionId: string | 
       }
     );
 
-    return () => unsub();
+    const sessionRef = doc(db, "users", userId, "sessions", sessionId);
+    const unsubSession = onSnapshot(sessionRef, (docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        const sessionTitle = data.title ?? "Untitled Session";
+        document.title = sessionTitle;
+      } else {
+        document.title = "Untitled Session";
+      }
+    });
+
+    return () => {
+      unsubMessages();
+      unsubSession();
+    };
   }, [userId, sessionId]);
 
   return { messages, loading, setMessages };
