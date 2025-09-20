@@ -68,16 +68,17 @@ REQUIRED OUTPUT FORMAT:
 Return ONLY a valid JSON object with this exact structure:
 {
   "questions": [
-    "### Question 1\\n<your markdown-formatted, bullet-pointed question here>",
-    "### Question 2\\n<your markdown-formatted, bullet-pointed question here>",
-    "### Question 3\\n<your markdown-formatted, bullet-pointed question here>",
-    "### Question 4\\n<your markdown-formatted, bullet-pointed question here>",
-    "### Question 5\\n<your markdown-formatted, bullet-pointed question here>"
+    "### \\n<your markdown-formatted, bullet-pointed question here>",
+    "### \\n<your markdown-formatted, bullet-pointed question here>",
+    "### \\n<your markdown-formatted, bullet-pointed question here>",
+    "### \\n<your markdown-formatted, bullet-pointed question here>",
+    "### \\n<your markdown-formatted, bullet-pointed question here>"
   ]
 }
 
 OUTPUT RULES:
 - Use double quotes for all strings
+- IMPORTANT: Escape all double quotes inside string values using \\". Do not include any raw unescaped quotes.
 - Each string must include **markdown formatting** (headings, bullet points, icons/emojis)
 - No additional text outside the JSON object
 - Exactly 5 questions, no more, no less
