@@ -54,7 +54,9 @@ const router = useRouter();
               whileHover={{ y: -3 }}
               transition={{ duration: 0.1, ease: "easeInOut" }}
               key={conv.id}
-              onClick={() => router.push(`/chat/${conv.id}`)}
+              onClick={() => {
+                document.title = conv.title||"New Chat"
+                router.push(`/chat/${conv.id}`)}}
               className={`flex items-center gap-2 py-3 rounded-xl cursor-pointer transition-all hover:shadow-lg px-4 shadow-sm ${currentSessionId === conv.id
                 ? 'bg-indigo-200'
                 : "bg-white border text-zinc-700"
@@ -62,7 +64,7 @@ const router = useRouter();
             >
               {/* <MessageSquare size={18} className="flex-shrink-0" /> */}
               <div className="truncate">
-                <p className="font-semibold text-sm">{conv.title || "Untitled Chat"}</p>
+                <p className="font-medium text-sm">{conv.title.slice(0, 35)+ (conv.title.length > 35 ? " ..": "") || "Untitled Chat"}</p>
               </div>
             </motion.div>
           ))}

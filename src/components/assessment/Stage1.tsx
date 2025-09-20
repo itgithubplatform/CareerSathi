@@ -39,6 +39,13 @@ export default function Stage1({ form, setForm }: {
                           <SelectItem value="arts">Arts / Humanities</SelectItem>
                           <SelectItem value="law">Law </SelectItem>
                           <SelectItem value="management">Management / Business </SelectItem>
+                          <SelectItem value="performing-arts">Performing Arts / Entertainment</SelectItem>
+                          <SelectItem value="hospitality">Hospitality / Tourism / Aviation</SelectItem>
+                          <SelectItem value="social-work">Social Work / Community Services</SelectItem>
+                          <SelectItem value="sports">Sports / Physical Education</SelectItem>
+                          <SelectItem value="agriculture">Agriculture / Forestry</SelectItem>
+                          <SelectItem value="govt-services">Government Services / Public Administration</SelectItem>
+                          <SelectItem value="armed-forces">Armed Forces / Defence Studies</SelectItem>
                           <SelectItem value="design">Design / Fine Arts / Architecture </SelectItem>
                           <SelectItem value="computer">Computer Applications / IT </SelectItem>
                           <SelectItem value="education">Education / Teaching </SelectItem>

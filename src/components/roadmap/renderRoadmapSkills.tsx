@@ -8,9 +8,7 @@ import { Button } from '../ui/button'
 import { CheckCircle, Circle } from 'lucide-react'
 import { useAtom } from 'jotai'
 import { roadmapAtom } from '@/lib/atom'
-import remarkGfm from 'remark-gfm'
-import Link from 'next/link'
-import ReactMarkdown from 'react-markdown'
+import RenderMarkdown from '../ui/RenderMarkdown'
 
 export default function RenderRoadmapSkills({itemVariants, roadmap,containerVariants}:{itemVariants: Variants, roadmap: Roadmap, containerVariants:Variants}) {
   const [roadmapStore, setRoadmapStore] = useAtom(roadmapAtom)
@@ -95,21 +93,7 @@ export default function RenderRoadmapSkills({itemVariants, roadmap,containerVari
                   >
                     <div className="flex items-center gap-3 flex-1">
                       <span className={skill.done ? ' text-green-700' : ''}>
-                        <ReactMarkdown components={{
-                                    p: ({ children }) => <p className="mb-3 text-gray-800 leading-6">{children}</p>,
-                                    ul: ({ children }) => <ul className="list-disc ml-5 mb-3 text-gray-800">{children}</ul>,
-                                    ol: ({ children }) => <ol className="list-decimal ml-5 mb-3 text-gray-800">{children}</ol>,
-                                    li: ({ children }) => <li className="mb-1">{children}</li>,
-                                    h3: ({ children }) => <h3 className="text-lg font-semibold mt-4 mb-2 text-gray-900">{children}</h3>,
-                                    h4: ({ children }) => <h4 className="text-base font-semibold mt-3 mb-1 text-gray-900">{children}</h4>,
-                                    strong: ({ children }) => <strong className="font-bold">{children}</strong>,
-                                    em: ({ children }) => <em className="italic">{children}</em>,
-                                    a: ({ children, href }) => (
-                                      <Link href={href||"/roadmap"} className="text-blue-600 hover:underline">
-                                        {children}
-                                      </Link>
-                                    ),
-                                  }} remarkPlugins={[remarkGfm]}>{skill.skill}</ReactMarkdown>
+                        <RenderMarkdown>{skill.skill}</RenderMarkdown>
                       </span>
                     </div>
                     <Button

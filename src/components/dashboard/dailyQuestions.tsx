@@ -94,7 +94,7 @@ export default function DailyQuestions() {
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0, y: -10 }}
                                         transition={{ delay: index * 0.07, duration: 0.25 }}
-                                        className="group relative flex items-start justify-between p-5 rounded-2xl border border-gray-200 shadow-sm
+                                        className="group relative flex flex-col md:flex-row gap-3 justify-between items-center p-5 rounded-2xl border border-gray-200 shadow-sm
              bg-white hover:shadow-md hover:bg-gray-50 transition-all duration-200 cursor-pointer"
                                     >
                                         <div className="flex-1">

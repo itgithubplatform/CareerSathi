@@ -52,6 +52,7 @@ Your task: Recommend up to 6 suitable career paths for the user.
 CRITICAL RULES:
 - Respond ONLY with a valid JSON object.
 - Do NOT include any text outside the JSON.
+- IMPORTANT: Escape all double quotes inside string values using \\". Do not include any raw unescaped quotes.
 - Each career must have:
    - "name": A short string (career title).
    - "description": A string that must include Markdown formatting to explain the career in three sentences include jargons if any.

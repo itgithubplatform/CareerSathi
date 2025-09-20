@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 const steps = [
   "Reviewing your inputs…",
@@ -28,11 +29,12 @@ export default function CareerLoader() {
   return (
     <div className="flex flex-col items-center justify-center h-screen text-center px-4">
       {/* Spinner */}
-      <motion.div
-        animate={{ rotate: 360 }}
-        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-        className="w-14 h-14 rounded-full border-4 border-blue-500 border-t-transparent"
-      />
+       <DotLottieReact
+              style={{ height: "60%", width: "60%" }}
+              src="/robot.lottie"
+              loop
+              autoplay
+            />
 
       {/* Rotating messages */}
       <div className="mt-6 h-6">
