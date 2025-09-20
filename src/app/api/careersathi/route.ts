@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     const history: ChatMessage[] = Array.isArray(body.history) ? body.history : [];
 
     const conversationText = history
-      .map((h) =>
+      .slice(-15).map((h) =>
         `${h.role === "user" ? "Student" : "CareerSathi"}: ${h.text}`
       )
       .join("\n");

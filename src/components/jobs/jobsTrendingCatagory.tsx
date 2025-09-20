@@ -3,13 +3,16 @@ import React, { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 const trendingCat = [
-"Software Engineering",
-"Data Science",
-"Product Management",
-"Design",
-"Marketing",
-"UX/UI Design"
-]
+  "Software Engineering",
+  "Data Science",
+  "Product Management",
+  "UX/UI Design",
+  "Digital Marketing",
+  "Cybersecurity",
+  "Sustainability Consulting",
+  "Healthcare Analytics"
+];
+
 export default function JobsTrendingCatagory({querry}:{querry:string}) {
     useEffect(() => {
         console.log();
