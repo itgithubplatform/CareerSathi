@@ -135,6 +135,6 @@ Generate exactly 5 NEW, varied, and specific actionable questions NOW:
         }
         return NextResponse.json({ questions }, { status: 200 })
     } catch (error) {
-        NextResponse.json({ message: "Something went wrong" }, { status: 500 })
+        return NextResponse.json({ message: "Something went wrong" }, { status: 500 })
     }
 }
