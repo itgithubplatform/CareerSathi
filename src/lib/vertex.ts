@@ -2,10 +2,10 @@ import { VertexAI } from "@google-cloud/vertexai";
 
 const vertex = new VertexAI({
   project: process.env.GOOGLE_PROJECT_ID!,
-  location: "us-central1",
-  googleAuthOptions: {
-    keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS, // file path
-  },
+  location: "asia-south1",
+  // googleAuthOptions: {
+  //   keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS, // file path
+  // },
 });
 
 export const careerModel = vertex.getGenerativeModel({
