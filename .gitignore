@@ -44,4 +44,4 @@ prisma/dev.db-journal
 .vscode/
 .idea/
 *.swp
-*.swo
+*.swovertex-key.json
