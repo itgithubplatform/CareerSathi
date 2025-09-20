@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { signIn } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
@@ -12,6 +12,7 @@ import { FaLinkedin } from 'react-icons/fa'
 export default function SignUpPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+   const {data: session, status} = useSession()
   const router = useRouter()
 
   const handleGoogleSignUp = async () => {
@@ -35,7 +36,9 @@ export default function SignUpPage() {
       setIsLoading(false)
     }
   }
-
+if (status==="authenticated") {
+    router.push('/dashboard')
+  } 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
       <div className="max-w-md w-full">
