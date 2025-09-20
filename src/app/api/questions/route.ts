@@ -100,7 +100,6 @@ EXAMPLE STARTERS (adaptable to any skill/project type):
 Generate exactly 5 NEW, varied, and specific actionable questions NOW:
 `;
 
-
             const rawReply = (await askVertex(prompt)).trim()
             console.log(rawReply);
 

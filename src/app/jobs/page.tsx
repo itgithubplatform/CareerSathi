@@ -32,7 +32,6 @@ export default async function page({ searchParams }: { searchParams: any }) {
                 </>
             )
         } else {
-            const jobArr = await getRecommendedJobs()
             return (
                 <>
                     <div className='min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-6 pt-28'>
@@ -40,7 +39,7 @@ export default async function page({ searchParams }: { searchParams: any }) {
                         <div className='mx-auto max-w-6xl'>
                             <JobsHeader />
                             <JobsTrendingCatagory querry={querry} />
-                            <JobsRecommendation jobsArr={jobArr} />
+                            <JobsRecommendation />
                         </div>
                     </div>
                     <Footer />

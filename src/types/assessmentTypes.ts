@@ -3,12 +3,13 @@ export type AssessmentFormData = {
   education: string;
   stream: string;
   situation: string;
-  environment: string;
   // Stage 2
+  environment: string;
   activities: string[];
   // Stage 3
   learningStyles: string[];
-
+  knownCareer: string|null,
+  preferredIndustries: string[], 
   // Stage 4
   uncertainty: string;
   tradeoff: string;

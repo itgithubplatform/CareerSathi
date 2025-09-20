@@ -10,7 +10,7 @@ export async function POST(req: Request) {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-      
+
     }
     const body = await req.json();
     const message = typeof body.message === "string" ? body.message : "";
@@ -21,23 +21,23 @@ export async function POST(req: Request) {
         `${h.role === "user" ? "Student" : "CareerSathi"}: ${h.text}`
       )
       .join("\n");
-const userProfile = await prisma.userProfile.findUnique({
-  where: { userId: session.user.id },select: {
-    createdAt:false,
-    updatedAt: false,
-    id: false,
-    userId: false,
-    education: true,
-    stream: true,
-    situation: true,
-    environment: true,
-    activities: true,
-    learningStyles: true,
-    uncertainty: true,
-    tradeoff: true
-  } 
-})
-   const prompt = `
+    const userProfile = await prisma.userProfile.findUnique({
+      where: { userId: session.user.id }, select: {
+        createdAt: false,
+        updatedAt: false,
+        id: false,
+        userId: false,
+        education: true,
+        stream: true,
+        situation: true,
+        environment: true,
+        activities: true,
+        learningStyles: true,
+        uncertainty: true,
+        tradeoff: true
+      }
+    })
+    const prompt = `
 You are CareerSathi, a friendly but practical career guidance mentor.
 
 Output rules:
@@ -49,9 +49,9 @@ Output rules:
   "content": "Markdown-formatted reply shown in chat. Keep it concise, warm, and clear.",
   "roadmap": "" OR {
     "careerPath": "string",
-    "skillsToLearn": ["skill1", "skill2"],
+    "skillsToLearn": ["string (markdown with heading, explanation, and how to learn it)"],
     "recommendedProjects": [
-      { "title": "string", "description": "string" }
+      { "title": "string", "description": "string (markdown explaining the project, why it helps, and practical guidance)" }
     ]
   }
 }
@@ -73,8 +73,15 @@ Guidelines:
    - Don’t suggest a roadmap until you have enough info.
 2. Once enough info is clear:
    - Suggest **1 realistic career path** (not too many options at once).
-   - Add **skills to learn** and **small starter projects** in roadmap.
+   Each skill must be written in markdown with a clear heading, explanation, and step-by-step learning approach tailored to the user.
+- Each project must have a helpful title and a markdown description that explains what the project is, why it matters, and practical guidance (with links, resources, or hints).
+- Ensure the content is realistic, actionable, and not generic filler.
+   - Add **skills to learn** and **recommended projects** in roadmap.
 3. Always keep responses concise, encouraging, expressive with emojis, and easy to read in Markdown.
+- IMPORTANT: Output strictly valid JSON. 
+  Escape all double quotes inside string values (use \\" instead of ").
+  Do not include explanations or text outside the JSON.
+
 `;
 
     const rawReply = (await askVertex(prompt)).trim();
@@ -102,14 +109,14 @@ Guidelines:
               description: project.description,
             })),
           },
-          user:{
+          user: {
             connect: {
               id: session.user.id
             }
-            }
+          }
         },
       })
-      return NextResponse.json({ reply: `${reply.content}\n\n[View roadmap](/roadmap/${newRoadmap.id})`, title: reply.title});
+      return NextResponse.json({ reply: `${reply.content}\n\n[View roadmap](/roadmap/${newRoadmap.id})`, title: reply.title });
     }
     return NextResponse.json({ reply: reply.content, title: reply.title });
   } catch (err) {

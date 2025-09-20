@@ -3,12 +3,17 @@ import React, { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { JobArray, JobType } from '@/types/jobsType'
 import JobCard from '../jobs/jobCard'
+import { recommendedJobsAtom } from '@/lib/atom'
+import { useAtom } from 'jotai'
 
 export default function DashboardRecommendedJobs() {
-    const [jobs, setJobs] = React.useState<JobType[]|null>(null)
+    const [jobs, setJobs] = useAtom(recommendedJobsAtom)
     const [loading, setLoading] = React.useState(false)
     const getRecommendedJobs = async() => {
         try {
+          if (jobs) {
+            return
+          }
           setLoading(true)
             const response = await fetch('/api/jobs/recommended', {
                 method: 'GET',

@@ -61,6 +61,8 @@ model UserProfile {
   environment       String
   activities        String[]
   learningStyles    String[]
+  knownCareer       String?
+  preferredIndustries String[] 
   uncertainty       String
   tradeoff          String
   createdAt         DateTime @default(now())
