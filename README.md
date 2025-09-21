@@ -92,6 +92,9 @@ NEXTAUTH_SECRET="your-secret-key"
 GOOGLE_CLIENT_ID="your-google-client-id"
 GOOGLE_CLIENT_SECRET="your-google-client-secret"
 
+# LinkedIn OAuth
+LINKEDIN_CLIENT_ID="your-linkedin-client-id"
+LINKEDIN_CLIENT_SECRET="your-linkedin-client-secret"
 
 # Firebase (client & admin)
 NEXT_PUBLIC_FIREBASE_API_KEY="..."
@@ -134,8 +137,9 @@ Open [http://localhost:3000](http://localhost:3000) to access the app.
 
 * **Sign In / Sign Up Pages**
 
-  * Google OAuth 
-  * Email/Password (not enabled yet)
+  * Google OAuth ✅
+  * LinkedIn OAuth ✅
+  * Email/Password (optional)
 * **Security Features**
 
   * JWT session
@@ -237,10 +241,10 @@ Open [http://localhost:3000](http://localhost:3000) to access the app.
 
 ## **💻 Tech Stack**
 
-* **Frontend:** Next.js 14, TypeScript, Tailwind CSS, Framer Motion
-* **Backend:** NextAuth.js, Prisma ORM, SQLite
-* **AI:** Google Cloud Vertex AI Gemini, Vector DB
-* **Authentication:** OAuth (Google, LinkedIn), email/password optional
+* **Frontend:** Next.js 13+, TypeScript, Tailwind CSS, Framer Motion
+* **Backend:** NextAuth.js, Prisma ORM, SQLite, postgreSQL, Firestore
+* **AI:** Google Cloud Vertex AI Gemini, Vector DB(not implemented currently)
+* **Authentication:** OAuth (Google), email/password (not implemented)(optional)
 * **Deployment:** Vercel recommended
 
 ---
@@ -263,8 +267,8 @@ MIT License – see [LICENSE](LICENSE)
 
 ## **📞 Support**
 
-* Email: [hello@careersathi.com](mailto:hello@careersathi.com)
-* Discord: Join the community for real-time support
+* Email: [hello@careersathi.com](mailto:saswatapal960@gmail.com)
+* connect with us for real-time support
 
 ---
 
