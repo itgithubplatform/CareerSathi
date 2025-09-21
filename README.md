@@ -134,7 +134,7 @@ Open [http://localhost:3000](http://localhost:3000) to access the app.
 
 * **Sign In / Sign Up Pages**
 
-  * Google OAuth ✅
+  * Google OAuth 
   * Email/Password (not enabled yet)
 * **Security Features**
 
