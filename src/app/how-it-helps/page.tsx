@@ -159,7 +159,7 @@ export default function HowItHelpsPage() {
             </h1>
             
             <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-              Your personalized AI mentor for school, fresher, or professional life.
+              Get tailored guidance for schoolwork, starting your career, or advancing as a professional.
               <br />
               Real stories, real results, real career transformation.
             </p>
