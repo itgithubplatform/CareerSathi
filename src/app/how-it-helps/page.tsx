@@ -294,7 +294,7 @@ export default function HowItHelpsPage() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-bold font-display mb-6 text-gradient">
-              AI Chatbot That Understands You
+              The AI That Anticipates Your Needs
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               More than just answers—a mentor that sparks new ideas and adapts to your evolving journey.
