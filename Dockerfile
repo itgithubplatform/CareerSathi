@@ -3,7 +3,6 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-ENV NEXT_PUBLIC_FIREBASE_API_KEY="AIzaSyAG4_a-soOgFq5Hk7yMmiVbeHSSxVdpkmc"
 ENV NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN="career-sathi-bot.firebaseapp.com"
 ENV NEXT_PUBLIC_FIREBASE_PROJECT_ID="career-sathi-bot"
 ENV NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET="career-sathi-bot.firebasestorage.app"
