@@ -92,9 +92,6 @@ NEXTAUTH_SECRET="your-secret-key"
 GOOGLE_CLIENT_ID="your-google-client-id"
 GOOGLE_CLIENT_SECRET="your-google-client-secret"
 
-# LinkedIn OAuth
-LINKEDIN_CLIENT_ID="your-linkedin-client-id"
-LINKEDIN_CLIENT_SECRET="your-linkedin-client-secret"
 
 # Firebase (client & admin)
 NEXT_PUBLIC_FIREBASE_API_KEY="..."
@@ -138,8 +135,7 @@ Open [http://localhost:3000](http://localhost:3000) to access the app.
 * **Sign In / Sign Up Pages**
 
   * Google OAuth ✅
-  * LinkedIn OAuth ✅
-  * Email/Password (optional)
+  * Email/Password (not enabled yet)
 * **Security Features**
 
   * JWT session
