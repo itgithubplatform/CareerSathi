@@ -45,3 +45,15 @@ prisma/dev.db-journal
 .idea/
 *.swp
 *.swovertex-key.json
+
+#others
+CLEAN_INSTALL.bat
+COMPLETE_SYSTEM_VERIFICATION.md
+FINAL_ERRORLESS_STRUCTURE.md
+FINAL_VERIFICATION.md
+OAUTH_KEYS_SETUP.md
+OAUTH_SETUP.md
+install-oauth.bat
+install.bat
+PROJECT_COMPLETE.md
+SETUP.md
