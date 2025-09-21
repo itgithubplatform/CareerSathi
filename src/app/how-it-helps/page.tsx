@@ -297,7 +297,7 @@ export default function HowItHelpsPage() {
               AI Chatbot That Understands You
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              More than just answers - a mentor that adapts to your unique situation
+              More than just answers—a mentor that sparks new ideas and adapts to your evolving journey.
             </p>
           </motion.div>
           
