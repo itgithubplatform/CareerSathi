@@ -6,15 +6,42 @@ A **personalized AI-powered career and skills advisor** for Indian students, des
 
 ## **🚀 Features**
 
-* 🤖 **AI-Powered Career Recommendations**: Personalized career suggestions based on your **skills, interests, motivation, and profile**.
-* 🎯 **Career Roadmaps**: Step-by-step roadmap to achieve career goals.
-* 📊 **Skill Gap Analysis**: Visual skill assessment and learning suggestions.
-* 🔐 **Secure Authentication**: Google OAuth and email/password authentication.
-* 📝 **Multi-Stage Assessment**: 4-stage interactive assessment with optional chatbot guidance.
-* 💬 **Chatbot Assistance**: CareerSathi AI assistant for guidance when unsure or confused.
-* 📱 **Responsive Design**: Works seamlessly on desktop and mobile.
-* 🚀 **Modern Tech Stack**: Next.js 14, TypeScript, Tailwind CSS, Prisma, Framer Motion.
-* 🛡️ **Security & Privacy**: JWT-based sessions, protected routes, CSRF protection, secure storage.
+## 🚀 CareerSathi – Key Features
+
+- 🤖 **AI-Powered Career Recommendations**  
+  Suggests 2–3 personalized career paths across **tech & non-tech fields** (doctor, IAS, engineer, gamer, singer, entrepreneur, etc.)  
+  based on **skills, interests, motivation, and time availability**.
+
+- 🎯 **Career Roadmaps**  
+  Adaptive, step-by-step roadmap updated every 4 months with latest industry trends (e.g., GenAI, creator economy).
+
+- 📊 **Skill Gap Analysis**  
+  Compares user’s current profile with target career, highlights gaps, and suggests learning resources.
+
+- 📝 **Multi-Stage Assessment**  
+  Interactive 4-stage onboarding capturing qualifications, interests, motivation, and goals.
+
+- 💬 **Empathetic Chatbot Guidance**  
+  Context-aware AI chatbot for resolving doubts, handling personal challenges (finance, family, health, etc.),  
+  and suggesting micro-experiments for talent discovery.
+
+- 📅 **Daily Micro-Tasks**  
+  Personalized small tasks as footprints toward career success, directly integrated in the user dashboard.
+
+- 💼 **Job Recommendation & Apply**  
+  Matches user profiles with **real-time job opportunities** and allows direct applications from dashboard.
+
+- 📱 **Personal Dashboard**  
+  Central hub to track progress via weekly graphs, update profile anytime, and connect back with the chatbot.
+
+- 🔐 **Secure Authentication**  
+  Google OAuth + Email/Password with JWT-based sessions, CSRF protection, and secure storage.
+
+- 🌐 **Responsive & Scalable Design**  
+  Built on **Next.js 13+, TypeScript, Tailwind, Prisma, Framer Motion** for modern UX and smooth performance.
+
+- 🛡️ **Privacy First**  
+  User data stored securely in **PostgreSQL & Firestore**, processed via Vertex AI Gemini with encryption and consent control.
 
 ---
 
