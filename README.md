@@ -22,26 +22,80 @@ A **personalized AI-powered career and skills advisor** for Indian students, des
 
 ```
 src/
-├── app/                        # Next.js App Router
-│   ├── api/                    # API routes (profile, recommend, plan, practice, chatbot)
-│   ├── auth/                   # SignIn / SignUp pages with OAuth
-│   ├── dashboard/              # Student dashboard
-│   ├── plan/                   # Career roadmap UI
-│   ├── practice/               # Skill micro-experiments
-│   │   └── experiments/        # Cards for guided tasks
-│   └── layout.tsx              # Global layout
-├── components/                 # Reusable UI components
-│   ├── auth/                   # Authentication components
-│   ├── layout/                 # Header, Footer, Navigation
-│   ├── providers/              # Session & context providers
-│   └── ui/                     # Buttons, Cards, Progress Bars, etc.
-├── lib/                        # Utility libraries
-│   ├── auth.ts                 # NextAuth.js configuration
-│   ├── firebase.ts             # Firebase client
-│   ├── firebase-admin.ts       # Firebase admin utilities
-│   └── vertex/                 # AI helper functions (recommendations, chatbot)
-├── types/                      # TypeScript definitions (profile, roadmap, career)
-└── middleware.ts               # Route protection and JWT validation
+├── app/                        # Next.js App Router – all application routes
+│   ├── api/                    # Serverless API endpoints
+│   │   ├── assessment/         # Assessment logic and scoring
+│   │   ├── auth/               # Authentication APIs (sign-in / sign-up / OAuth)
+│   │   ├── careersathi/        # Career guidance and recommendation APIs
+│   │   ├── charts/             # Data visualization & analytics APIs
+│   │   ├── jobs/               # Job search & recommendation APIs
+│   │   ├── questions/          # Dynamic question retrieval for assessments
+│   │   └── roadmap/            # Career roadmap generation APIs
+│   ├── auth/                   # Public authentication pages
+│   │   ├── signin/             # Sign-in page
+│   │   └── signup/             # Sign-up page
+│   ├── dashboard/              # Personalized student dashboard
+│   │   ├── loading/            # Suspense loading state
+│   │   └── page/               # Dashboard entry point
+│   ├── plan/                   # Career roadmap UI (renamed from `roadmap`)
+│   │   ├── [[id]]/             # Dynamic roadmap details
+│   │   └── page/               # Roadmap landing page
+│   ├── practice/               # Skill-building practice modules
+│   │   └── experiments/        # Guided micro-experiments
+│   ├── how-it-helps/           # Static informational page
+│   ├── jobs/                   # Job listings & search interface
+│   │   ├── loading/
+│   │   └── page/
+│   ├── chat/                   # Real-time chat interface
+│   │   └── [[id]]/             # Dynamic chat sessions
+│   │       └── page/
+│   ├── assessment/             # Assessment flow entry page
+│   ├── layout/                 # Global layout wrapper (shared header/footer)
+│   ├── page/                   # Root landing page
+│   ├── error/                  # Application-wide error boundary
+│   ├── not-found/              # 404 page
+│   └── globals.css             # Global styles
+│
+├── components/                 # Reusable, feature-oriented React components
+│   ├── auth/                   # Authentication UI widgets
+│   ├── layout/                 # Header, footer, navigation bars
+│   ├── providers/              # Context & session providers
+│   ├── dashboard/              # Dashboard cards and charts
+│   ├── assessment/             # Assessment UI elements
+│   ├── chat/                   # Chat UI widgets
+│   ├── jobs/                   # Job-related components
+│   ├── roadmap/                # Career roadmap visuals
+│   └── ui/                     # Shared UI primitives (buttons, cards, progress bars)
+│
+├── hooks/                      # Custom React hooks
+│   ├── useAutoScroll/          # Auto-scrolling for chat windows
+│   ├── useChatMessages/        # Chat message management
+│   └── useChatSessions/        # Chat session handling
+│
+├── lib/                        # Core utilities and service layers
+│   ├── assessmentChecker/      # Assessment validation and scoring helpers
+│   ├── atom/                   # Jotai/Recoil state atoms
+│   ├── auth/                   # Authentication configuration
+│   ├── chatStorage/            # Persistent chat storage utilities
+│   ├── firebase/               # Firebase client SDK
+│   ├── prisma/                 # Prisma ORM client
+│   ├── questionService/        # Question retrieval service
+│   ├── randomGreeting/         # Friendly greeting generator
+│   ├── utils/                  # General-purpose helper functions
+│   ├── parseJDToHTML/          # Parse job descriptions into HTML
+│   ├── getRecommendedJobs/     # Job recommendation engine
+│   └── vertex/                 # AI helper functions (Vertex AI)
+│
+├── types/                      # Central TypeScript type definitions
+│   ├── profile/                # User profile types
+│   ├── roadmap/                # Career roadmap types
+│   └── career/                 # Career and job types
+│
+├── middleware/                 # Route protection & JWT validation
+├── .envExample                 # Environment variable template
+├── .eslintrc.json              # ESLint configuration
+└── .gitignore                  # Git ignore rules
+
 ```
 
 ---
