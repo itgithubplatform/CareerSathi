@@ -66,7 +66,7 @@ export default function ChatPage() {
       const res = await fetch("/api/careersathi", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userMessage.text, history, provider: "gemini" }),
+        body: JSON.stringify({ message: userMessage.text, provider: "gemini",chatId: sessionId }),
       });
       
       const data = await res.json();

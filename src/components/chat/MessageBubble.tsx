@@ -30,7 +30,7 @@ export default function MessageBubble({ msg }: { msg: ChatMessage }) {
             em: ({ children }) => <em className="italic">{children}</em>,
             a: ({ children, href }) => (
               <Link target="_blank" href={href||"/roadmap"} className="text-blue-600 bg-blue-50 hover:scale-105 transition-all duration-200 hover:bg-blue-100 p-2 border border-blue-400 rounded-lg" rel="noopener noreferrer">
-                {children}
+                {children && children.toString().length > 50 ? children?.toString().slice(0, 50) + "..." : children}
               </Link>
             ),
           }} remarkPlugins={[remarkGfm]}>{msg.text}</ReactMarkdown>}
