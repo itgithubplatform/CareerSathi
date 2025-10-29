@@ -2,10 +2,11 @@
 import { useRouter } from "nextjs-toploader/app";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { Briefcase, Link } from "lucide-react"; 
+import { Briefcase, Link, X } from "lucide-react"; 
 import remarkGfm from "remark-gfm";
 import ReactMarkdown from "react-markdown";
 import CareerLoader from "./CareerLoader";
+import SimulateCareerPage from "./simulateCareer";
 
 interface CareerRecommendationsProps {
   careerPaths: {
@@ -17,6 +18,7 @@ interface CareerRecommendationsProps {
 export default function CareerRecommendations({ careerPaths }: CareerRecommendationsProps) {
   const router = useRouter();
   const [loadingCareer, setLoadingCareer] = useState(false);
+  const [simulation, setSimulation] = useState<string|null>(null);
 
   const handleSelectCareer = async (career: { name: string; description: string }) => {
     try {
@@ -55,7 +57,15 @@ if (loadingCareer) {
       >
         Your Recommended Career Paths
       </motion.h1>
-
+      <div className="flex flex-col md:flex-row items-center justify-center mb-12 gap-2">
+      <span>None of these feels right?</span>
+      <button
+        onClick={handleRejectAll}
+        className=" text-sm text-gray-600 hover:text-gray-800 bg-white hover:bg-gray-100  hover:shadow-lg border border-gray-300 py-2 px-4 rounded-lg transition"
+        >
+        Chat with <span className="text-purple-700 font-semibold">AI Mentor</span>
+      </button>
+        </div>
       <div className="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 gap-6">
         {careerPaths.map((career, idx) => (
           <motion.div
@@ -92,9 +102,32 @@ if (loadingCareer) {
             >
               Choose this path
             </button>
+            <button
+              onClick={() =>setSimulation(career.name)}
+              className={`mt-2 w-full py-2 px-4 rounded-lg text-white font-medium transition bg-gradient-to-r from-blue-600 to-indigo-600 hover:bg-gradient-to-t hover:from-blue-700 hover:to-indigo-700`}
+            >
+              Simulate
+            </button>
           </motion.div>
         ))}
       </div>
+        {simulation && (
+     <div
+       
+       className="fixed inset-0 w-full h-full bg-black/30 flex justify-center items-center z-50 p-4"
+       onClick={() => setSimulation(null)}
+     >
+       <div
+         className="bg-white rounded-lg shadow-xl w-full max-w-6xl h-[90vh] overflow-y-auto"
+         onClick={(e) => e.stopPropagation()}
+       >
+        <button onClick={() => setSimulation(null)} className="absolute top-4 right-4 text-black p-1 rounded-lg hover:bg-white/50">
+          <X className=""  />
+          </button>
+         <SimulateCareerPage careerRole={simulation} />
+       </div>
+     </div>
+   )}
 
       {/* Reject All */}
 

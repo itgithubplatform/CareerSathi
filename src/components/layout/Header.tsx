@@ -37,7 +37,7 @@ export default function Header({ className }: { className?: string }) {
     { name: 'Talk to AI Mentor', href: '/chat' },
     { name: 'Jobs', href: '/jobs' },
     { name: 'How It Helps', href: '/how-it-helps' },
-    { name: 'About', href: '/#about' },
+    { name: 'Career Simulator', href: '/career_simulate' },
   ]
 
   // Which nav to show

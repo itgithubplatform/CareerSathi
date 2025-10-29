@@ -30,7 +30,7 @@ export default function CareerLoader() {
     <div className="flex flex-col items-center justify-center h-screen text-center px-4">
       {/* Spinner */}
        <DotLottieReact
-              style={{ height: "60%", width: "60%" }}
+              style={{ height: "45%", width: "60%" }}
               src="/robot.lottie"
               loop
               autoplay

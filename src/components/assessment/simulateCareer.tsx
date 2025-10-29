@@ -127,9 +127,12 @@ const LoadingSkeleton = () => (
 
 // --- MAIN PAGE COMPONENT ---
 
-export default function SimulateCareerPage() {
-  const [careerRole, setCareerRole] = useState("");
-  // Added TypeScript types for state
+export default function SimulateCareerPage({careerRole}: {careerRole: string}) {
+    useEffect(() => {
+        if (careerRole) {
+            handleSimulate();
+        }
+    },[careerRole]);
   const [result, setResult] = useState<SimulationResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -166,9 +169,6 @@ export default function SimulateCareerPage() {
     }
   };
 
-  /**
-   * Renders the main content area based on the current state (loading, error, or result).
-   */
   const renderContent = () => {
     if (loading) {
       return <LoadingSkeleton />;
@@ -285,56 +285,7 @@ export default function SimulateCareerPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 p-8 md:p-12 text-slate-900">
-      {/* --- Header --- */}
-      <header className="w-full max-w-6xl mx-auto mb-10">
-        <div className="flex items-center space-x-3">
-          <Briefcase className="w-8 h-8 text-indigo-600" />
-          <h1 className="text-3xl font-bold text-slate-800">
-            Career Day Simulator
-          </h1>
-        </div>
-        <p className="mt-2 text-lg text-slate-600">
-          Enter a career to simulate a day in the life and understand its core
-          responsibilities.
-        </p>
-      </header>
-
-      {/* --- Input Form --- */}
-      <form
-        onSubmit={handleSimulate}
-        className="w-full max-w-3xl mx-auto mb-12"
-      >
-        <div className="flex items-center gap-3 p-2 bg-white border border-slate-200 rounded-lg shadow-sm focus-within:ring-2 focus-within:ring-indigo-500">
-          <div className="relative flex-grow">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
-              <Search className="w-5 h-5 text-slate-400" />
-            </div>
-            <input
-              type="text"
-              value={careerRole}
-              onChange={(e) => setCareerRole(e.target.value)}
-              className="w-full p-3 pl-12 text-lg bg-transparent rounded-md focus:outline-none"
-              placeholder="e.g., AI Engineer, Marine Biologist..."
-              disabled={loading}
-            />
-          </div>
-          <button
-            type="submit"
-            disabled={loading || !careerRole.trim()}
-            className="flex-shrink-0 px-6 py-3 text-base font-semibold bg-indigo-600 text-white rounded-lg shadow-sm hover:bg-indigo-700 disabled:bg-slate-400 disabled:cursor-not-allowed transition-colors duration-200"
-          >
-            {loading ? (
-              <Loader2 className="w-5 h-5 animate-spin" />
-            ) : (
-              <div className="flex items-center">
-                Simulate <ArrowRight className="w-5 h-5 ml-2" />
-              </div>
-            )}
-          </button>
-        </div>
-      </form>
-
+    <div className="min-h-screen  p-8 md:p-12 text-slate-900">
       {/* --- Content Area --- */}
       <main>{renderContent()}</main>
     </div>

@@ -1,33 +1,25 @@
 // app/api/simulate_career/route.ts
 import { NextResponse } from "next/server";
 import { VertexAI } from "@google-cloud/vertexai";
-
-/**
- * New behavior:
- * - produce career overview, routine, core soft skills
- * - produce 4-5 scenarios each with choices
- * - include per-choice evaluation_hint and impact_score (hidden on frontend until submission)
- * - include optional related_roles suggestions for fallback careers if fit is poor
- *
- * IMPORTANT: This route WILL NOT compute overall_readiness up-front.
- */
+import { prisma } from "@/lib/prisma";
+import { authOptions } from "@/lib/auth";
+import { getServerSession } from "next-auth";
 
 export async function POST(req: Request) {
   try {
-    const { careerRole, context } = await req.json();
-
+    const { careerRole } = await req.json();
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
     if (!careerRole) {
       return NextResponse.json({ error: "Missing 'careerRole' in request body." }, { status: 400 });
     }
-
-    // Context is now vital and will be provided by the multi-stage form.
-    // The fallback is just for testing.
-    const userContext = context || {
-      qualification: "a 9th grade student",
-      motivation: "making a positive social impact and earning respect",
-      level: "beginner",
-    };
-
+    const userContext = await prisma.userProfile.findUnique({
+      where: {
+        userId: session.user.id,
+      }
+    })
     // Initialize Vertex AI client
     const vertexAI = new VertexAI({
       project: process.env.GOOGLE_PROJECT_ID,
@@ -39,7 +31,7 @@ export async function POST(req: Request) {
 
     // Prompt: ask Gemini to return JSON only. NOTE: Do NOT compute overall readiness here.
     // THIS IS THE MODIFIED PROMPT
-    const prompt = `
+  const prompt = `
 You are "Hars_h", a Career Mentor AI. Your purpose is to provide a blunt, unfiltered "Reality Check" simulation. You must avoid generic praise. You identify weaknesses directly and provide tough, actionable feedback.
 
 Generate a single JSON object (no extra text) for the career "${careerRole}", **critically tailored** to the user's specific context. The user's level (student, professional, switcher) and background (arts, science, sports, unemployed) MUST determine the complexity, stakes, and theme of the scenarios.
@@ -96,7 +88,7 @@ For each "evaluation_hint", you must first internally decide on 4 points:
 3.  micro_task: A single, concrete, 1-2 sentence actionable task to address the weakness (e.g., 'For 3 days, practice the '5-Why' technique on a small problem before acting.').
 4.  inspiration_quote: A short, tough, inspiring line (e.g., 'The obstacle is the way.', 'Hard choices, easy life.').
 
-Then, you MUST combine these 4 points into the single "evaluation_hint" string using this exact HTML format:
+Then, you MUST combine these 4 points into a **single JSON string** for the "evaluation_hint" field using this exact HTML format:
 "<b>Reality Check:</b> [reality_check text]<br><b>Weakness:</b> [weakness text]<br><b>Micro-Task:</b> [micro_task text]<br><b>Inspiration:</b> [inspiration_quote text]"
 
 Example for a bad choice:
@@ -105,11 +97,13 @@ Example for a bad choice:
 Example for a good choice:
 "evaluation_hint": "<b>Reality Check:</b> This is a solid, professional response. You've addressed the core issue without creating new ones. This builds trust.<br><b>Weakness:</b> Confident Decision-Making (A Strength).<br><b>Micro-Task:</b> Mentor someone else on your team for 15 minutes this week on how you reached this conclusion.<br><b>Inspiration:</b> You are what you repeatedly do. Excellence is a habit."
 
-Constraints:
-- Output must be valid JSON only (no markdown, no commentary).
-- Create 4 to 5 scenarios.
-- Make 'skill_focus' diverse (e.g., stress, ethics, teamwork, adaptability).
-- All content MUST be tailored to the user's context and the specific career.
+---
+**CRITICAL OUTPUT CONSTRAINTS (MANDATORY):**
+1.  **JSON ONLY:** Your *entire* response MUST be a single, valid JSON object.
+2.  **NO EXTRA TEXT:** Do NOT add *any* text, commentary, or markdown (like \`\`\`json) before the opening \`{\` or after the closing \`}\`.
+3.  **ESCAPE ALL STRINGS:** This is the most common error. All string values within the JSON *must* be properly escaped. Pay extreme attention to the "evaluation_hint" string. Any double-quotes (\`"\`) inside that string *must* be escaped as \`\\"\`. Any literal newlines *must* be escaped as \`\\n\` (or just use the \`<br>\` tag as instructed).
+4.  **CHECK SYNTAX:** Ensure there are no trailing commas in your lists or objects.
+---
 `;
 
     const result = await geminiModel.generateContent(
@@ -138,11 +132,15 @@ Constraints:
     }
 
     // Optionally generate a primary image using the first scenario visual_prompt
+    console.log(parsed);
+    
     const firstScenario = parsed.scenarios[0];
     let primaryImageBase64: string | undefined = undefined;
 
     try {
       if (firstScenario.visual_prompt && firstScenario.visual_prompt.length > 10) {
+        console.log("visual prompt:", firstScenario.visual_prompt);
+        
         const imageResult = await imageModel.generateContent(
           {
             contents: [{ role: "user", parts: [{ text: firstScenario.visual_prompt }] }],

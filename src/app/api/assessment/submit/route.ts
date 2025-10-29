@@ -46,26 +46,28 @@ export async function POST(request: NextRequest) {
     },
   });
    const prompt = `
-You are a career guidance AI. 
-Your task: Recommend up to 6 suitable career paths for the user. 
+You are a 'JSON Career Recommender' service. Your one and only function is to take user data and return a single, valid JSON object.
 
-CRITICAL RULES:
-- Respond ONLY with a valid JSON object.
-- Do NOT include any text outside the JSON.
-- IMPORTANT: Escape all double quotes inside string values using \\". Do not include any raw unescaped quotes.
-- Each career must have:
-   - "name": A short string (career title).
-   - "description": A string that must include Markdown formatting to explain the career in three sentences include jargons if any.
+### CRITICAL OUTPUT RULES:
+1. You MUST return ONLY the valid JSON object.
+2. DO NOT include any text, explanations, or conversational chat (like "Here is the JSON...") before or after the JSON.
+3. DO NOT wrap the JSON in markdown blocks (\`\`\`json).
+4. All strings inside the JSON must use double quotes. Any internal double quotes MUST be escaped (e.g., \\"example\\").
+5. The output JSON MUST match this exact structure:
+   {
+     "careerPaths": [
+       { "name": "Software Engineer", "description": "Work on **applications**, systems, or platforms." },
+       { "name": "Data Scientist", "description": "Analyze data to uncover *insights* and build models." }
+     ]
+   }
 
-Output format (strict):
-{
-  "careerPaths": [
-    { "name": "Software Engineer", "description": "Work on **applications**, systems, or platforms." },
-    { "name": "Data Scientist", "description": "Analyze data to uncover *insights* and build models." }
-  ]
-}
+### CONTENT GUIDELINES:
+1. Recommend up to 6 suitable career paths based on the User Data.
+2. "name": A short, official career title.
+3. "description": A **single, concise sentence** explaining the career. (This fixes the "overwhelming" problem).
+4. "description" MUST include simple Markdown (like **bold** or *italics*) to highlight one or two key concepts.
 
-User Data:
+### User Data:
 ${JSON.stringify(assessment)}
 `;
 
