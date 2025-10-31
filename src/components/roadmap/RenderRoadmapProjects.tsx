@@ -5,14 +5,15 @@ import { Roadmap } from '@/types/roadmap'
 import { Badge } from '../ui/badge'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '../ui/button'
-import { CheckCircle, Circle, Link } from 'lucide-react'
+import { CheckCircle, Circle, Info, Link } from 'lucide-react'
 import { roadmapAtom } from '@/lib/atom'
 import { useAtom } from 'jotai'
 import RenderMarkdown from '../ui/RenderMarkdown'
+import ProjectORSkillInfo from './ProjectORSkillInfo'
 
 export default function RenderRoadmapProjects({ itemVariants, roadmap, containerVariants }: { itemVariants: Variants, roadmap: Roadmap, containerVariants: Variants }) {
   const [roadmapStore, setRoadmapStore] = useAtom(roadmapAtom)
-
+  const [project, setProject] = React.useState<string|null>(null)
   const handleSkillDone = async (id: string) => {
     try {
       const projects = roadmap.recommendedProjects.map(project => {
@@ -100,6 +101,7 @@ export default function RenderRoadmapProjects({ itemVariants, roadmap, container
                       </h3>
                       <RenderMarkdown>{project.description}</RenderMarkdown>
                     </div>
+                    <div className='flex flex-col items-center gap-3'>
                     <Button
                       variant={project.done ? "outline" : "default"}
                       size="sm"
@@ -118,6 +120,18 @@ export default function RenderRoadmapProjects({ itemVariants, roadmap, container
                         </>
                       )}
                     </Button>
+                    <Button
+                  onClick={()=>setProject(project.title+" "+project.description)}
+                  size={"sm"}
+                    className='
+    bg-blue-500 hover:bg-blue-600
+    text-white w-full  
+    flex items-center gap-2 transition-colors  '
+                  >
+                    <Info className="" /> 
+                    Learn More
+                  </Button>
+                    </div>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     <Badge variant="outline" className="text-xs">
@@ -130,6 +144,9 @@ export default function RenderRoadmapProjects({ itemVariants, roadmap, container
           </motion.div>
         </CardContent>
       </Card>
+            {project && (
+              <ProjectORSkillInfo text={project} onClose={() => setProject(null)} />
+            )}
     </motion.div>
   )
 }

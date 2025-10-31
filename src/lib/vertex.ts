@@ -25,7 +25,7 @@ export async function askVertex(prompt: string): Promise<string> {
       }
     ]
   });
-   console.log(resp.response.candidates?.[0]?.content?.parts);   
+  //  console.log(resp.response.candidates?.[0]?.content?.parts);   
   return resp.response.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
 }
 
