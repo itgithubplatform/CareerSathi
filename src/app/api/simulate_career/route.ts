@@ -110,7 +110,9 @@ Example for a good choice:
       {
         contents: [{ role: "user", parts: [{ text: prompt }] }],
       },
+      // @ts-ignore
       {
+        
         responseMimeType: "application/json",
       }
     );
@@ -145,6 +147,7 @@ Example for a good choice:
           {
             contents: [{ role: "user", parts: [{ text: firstScenario.visual_prompt }] }],
           },
+          // @ts-ignore
           {
             numberOfImages: 1,
             aspectRatio: "16:9",

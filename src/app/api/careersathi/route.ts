@@ -42,9 +42,6 @@ export async function POST(req: Request) {
     // Task 2: Get User Profile (Cache or DB)
     const userProfilePromise = (async () => {
       const userProfileMap = UserProfileMap.getInstance();
-      let userProfileString = userProfileMap.getUserProfile(session.user.id);
-      if (userProfileString) return userProfileString; // Cache hit
-
       // Cache miss
       const userProfile = await prisma.userProfile.findUnique({
         where: { userId: session.user.id },
@@ -64,18 +61,13 @@ export async function POST(req: Request) {
         // This error will be caught by the main try/catch block
         throw new Error("User profile not found");
       }
-      userProfileString = userProfileToString(userProfile);
-      userProfileMap.setUserProfile(session.user.id, userProfileString);
+      const userProfileString = userProfileToString(userProfile);
       return userProfileString;
     })();
     
     // Task 3: Get Roadmap Context (Cache or DB)
     const roadmapContextPromise = (async () => {
       const userProfileMap = UserProfileMap.getInstance();
-      let completedItemsContext = userProfileMap.getUserRoadmap(session.user.id);
-      if (completedItemsContext) return completedItemsContext; // Cache hit
-      
-      // Cache miss
       const activeRoadmaps = await prisma.roadmap.findMany({
         where: {
           userId: session.user.id
@@ -92,8 +84,7 @@ export async function POST(req: Request) {
         }
       });
       
-      completedItemsContext = JSON.stringify(summarizeRoadmapsToString(activeRoadmaps));
-      userProfileMap.setUserRoadmap(session.user.id,completedItemsContext);
+      const completedItemsContext = JSON.stringify(summarizeRoadmapsToString(activeRoadmaps));
       return completedItemsContext;
     })();
     
