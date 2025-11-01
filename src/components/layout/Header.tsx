@@ -36,7 +36,6 @@ export default function Header({ className }: { className?: string }) {
     { name: 'Roadmap', href: '/roadmap' },
     { name: 'Talk to AI Mentor', href: '/chat' },
     { name: 'Jobs', href: '/jobs' },
-    { name: 'How It Helps', href: '/how-it-helps' },
     { name: 'Career Simulator', href: '/career_simulate' },
   ]
 

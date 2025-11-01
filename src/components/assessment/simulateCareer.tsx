@@ -14,6 +14,7 @@ import {
   MessageSquare,
   Target,
 } from "lucide-react";
+import LoadingSkeleton from "../layout/LoadingSkeleton";
 
 // --- TYPES (Updated to the detailed version) ---
 interface Choice {
@@ -99,31 +100,6 @@ const ScenarioCard = ({ scenario, index }: ScenarioCardProps) => (
 /**
  * A professional skeleton loader that mimics the result layout.
  */
-const LoadingSkeleton = () => (
-  <div className="w-full max-w-6xl mx-auto animate-pulse">
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      {/* Main Content Skeleton */}
-      <div className="lg:col-span-2 space-y-6">
-        <div className="h-10 w-3/4 bg-slate-200 rounded-lg"></div>
-        <div className="w-full h-64 bg-slate-200 rounded-lg"></div>
-        <div className="space-y-3">
-          <div className="h-4 bg-slate-200 rounded"></div>
-          <div className="h-4 bg-slate-200 rounded"></div>
-          <div className="h-4 w-5/6 bg-slate-200 rounded"></div>
-        </div>
-        {/* Skeleton for scenarios */}
-        <div className="h-24 w-full bg-slate-200 rounded-lg"></div>
-        <div className="h-24 w-full bg-slate-200 rounded-lg"></div>
-      </div>
-      {/* Sidebar Skeleton */}
-      <div className="lg:col-span-1 space-y-6">
-        <div className="w-full h-32 bg-slate-200 rounded-lg"></div>
-        <div className="w-full h-32 bg-slate-200 rounded-lg"></div>
-        <div className="w-full h-32 bg-slate-200 rounded-lg"></div>
-      </div>
-    </div>
-  </div>
-);
 
 // --- MAIN PAGE COMPONENT ---
 

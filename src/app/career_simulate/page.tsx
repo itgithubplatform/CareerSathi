@@ -1,7 +1,6 @@
 "use client";
 import { useState, ReactNode, useEffect } from "react";
-// Professional icons from lucide-react
-// You'll need to install this: npm install lucide-react
+import { motion } from "framer-motion";
 import {
   Search,
   ArrowRight,
@@ -14,8 +13,7 @@ import {
   MessageSquare,
   Target,
 } from "lucide-react";
-
-// --- TYPES (Updated to the detailed version) ---
+import LoadingSkeleton from "@/components/layout/LoadingSkeleton";
 interface Choice {
   choice_id: number;
   action: string;
@@ -46,18 +44,12 @@ interface SimulationResult {
   primary_image?: string | null;
 }
 
-// Prop types for InfoCard
 interface InfoCardProps {
   title: string;
   icon: ReactNode;
   children: ReactNode;
 }
 
-// --- REUSABLE COMPONENTS ---
-
-/**
- * A reusable card component for the sidebar to keep the UI consistent.
- */
 const InfoCard = ({ title, icon, children }: InfoCardProps) => (
   <div className="bg-white p-5 rounded-lg shadow-sm border border-slate-200">
     <div className="flex items-center mb-3">
@@ -68,9 +60,6 @@ const InfoCard = ({ title, icon, children }: InfoCardProps) => (
   </div>
 );
 
-/**
- * A reusable card to display a single scenario in a professional way.
- */
 interface ScenarioCardProps {
   scenario: MiniScenario;
   index: number;
@@ -91,35 +80,6 @@ const ScenarioCard = ({ scenario, index }: ScenarioCardProps) => (
         <MessageSquare className="w-4 h-4 mr-2 text-indigo-500" />
         <strong>Stakeholder:</strong>
         <span className="ml-1.5">{scenario.stakeholder_persona.role}</span>
-      </div>
-    </div>
-  </div>
-);
-
-/**
- * A professional skeleton loader that mimics the result layout.
- */
-const LoadingSkeleton = () => (
-  <div className="w-full max-w-6xl mx-auto animate-pulse">
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      {/* Main Content Skeleton */}
-      <div className="lg:col-span-2 space-y-6">
-        <div className="h-10 w-3/4 bg-slate-200 rounded-lg"></div>
-        <div className="w-full h-64 bg-slate-200 rounded-lg"></div>
-        <div className="space-y-3">
-          <div className="h-4 bg-slate-200 rounded"></div>
-          <div className="h-4 bg-slate-200 rounded"></div>
-          <div className="h-4 w-5/6 bg-slate-200 rounded"></div>
-        </div>
-        {/* Skeleton for scenarios */}
-        <div className="h-24 w-full bg-slate-200 rounded-lg"></div>
-        <div className="h-24 w-full bg-slate-200 rounded-lg"></div>
-      </div>
-      {/* Sidebar Skeleton */}
-      <div className="lg:col-span-1 space-y-6">
-        <div className="w-full h-32 bg-slate-200 rounded-lg"></div>
-        <div className="w-full h-32 bg-slate-200 rounded-lg"></div>
-        <div className="w-full h-32 bg-slate-200 rounded-lg"></div>
       </div>
     </div>
   </div>
@@ -166,9 +126,6 @@ export default function SimulateCareerPage() {
     }
   };
 
-  /**
-   * Renders the main content area based on the current state (loading, error, or result).
-   */
   const renderContent = () => {
     if (loading) {
       return <LoadingSkeleton />;
@@ -188,7 +145,15 @@ export default function SimulateCareerPage() {
         </div>
       );
     }
-
+    if (!loading && !result&& !error) {
+      return (<div className="w-full max-w-3xl mx-auto text-center h-56 flex justify-center items-center text-slate-600">
+        <p className="md:text-lg  " >
+          Enter a career above and click <span className="text-blue-500"> "Simulate"</span> to see a day in the life of
+          that role.
+        </p>
+      </div>
+      );
+    }
     if (result) {
       return (
         <div className="w-full max-w-6xl mx-auto">

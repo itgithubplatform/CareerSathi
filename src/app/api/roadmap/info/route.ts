@@ -1,4 +1,5 @@
 import { authOptions } from "@/lib/auth"
+import { ExpiringCache } from "@/lib/ExpiringCache"
 import { askVertex } from "@/lib/vertex"
 import { getServerSession } from "next-auth"
 import { NextResponse } from "next/server"
@@ -6,13 +7,17 @@ import { NextResponse } from "next/server"
 export async function POST(req:Request) {
     try {
         const data = await req.json()
-        const text = data.text
+        const text = data.text as string;
         if (!text) {
             return NextResponse.json({ error: "No text provided" }, { status: 400 })        
         }
         const session = await getServerSession(authOptions)
         if (!session?.user?.id) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+        }
+        if (ExpiringCache.getInstance().get<string>(`${session.user.id}-${text.trim()}`)) {
+            const cachedResponse = ExpiringCache.getInstance().get<string>(`${session.user.id}-${text.trim()}`)
+            return NextResponse.json({ text: cachedResponse }, { status: 200 })
         }
  const prompt = `
 You are an expert AI mentor and learning guide. A student needs a clear, encouraging, and actionable plan for the following topic.
@@ -64,6 +69,7 @@ Example: "A dedicated student can confidently master this in 3-4 focused weeks. 
 4.  You MUST generate this plan *only* from your internal knowledge. Do NOT use any external tools or search functions.
 `;
         const res = await askVertex(prompt)
+        ExpiringCache.getInstance().set<string>(`${session.user.id}-${text.trim()}`, res);
         return NextResponse.json({text: res}, { status: 200 })
     } catch (error) {
         return NextResponse.json({ error: "Internal server error" }, { status: 500 })
