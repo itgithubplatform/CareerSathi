@@ -48,21 +48,24 @@ export async function POST(req:Request){
       - Current Projects:
         ${existedRoadmap.recommendedProjects.map(project => `  - ${project.title}: ${project.description}`).join('\n')}
     `;
-const prompt = `
-You are an expert 'JSON Curriculum Upgrader' service. Your one and only function is to take the provided inputs and return a single, valid JSON object.
+const prompt = `You are an expert 'JSON Curriculum Upgrader' service. Your one and only function is to take the provided inputs and return a single, valid JSON object.
 
 **User's Profile (Tailor to this):**
-\${cleanProfileContext}
+${cleanProfileContext}
 
 **User's Existing Roadmap (Upgrade this):**
-\${cleanRoadmapContext}
+${cleanRoadmapContext}
 
 **Your Task:**
 You must regenerate this roadmap to be for a more "Intermediate" or "Advanced" level.
 - Use the user's profile to tailor the difficulty.
 - Make the new skills a logical *next step* from their "Current Skills".
 - Make the new projects more complex and impressive, building on their "Current Projects".
-- Keep the same career path: "\${existedRoadmap.careerPath}".
+- Keep the same career path: "${existedRoadmap.careerPath}".
+
+**CRITICAL DOMAIN GUIDELINE:**
+- All new skills and projects **MUST** be 100% relevant to the existing career path: \`"${existedRoadmap.careerPath}"\`.
+- **DO NOT** introduce web development concepts (like React, Next.js, or Node.js) **UNLESS** the \`careerPath\` is *already* a web development path.
 
 **CRITICAL OUTPUT REQUIREMENTS:**
 1.  **CRITICAL:** You MUST return **ONLY** the valid JSON object.
@@ -81,9 +84,9 @@ You must regenerate this roadmap to be for a more "Intermediate" or "Advanced" l
 }
 
 **CONTENT GUIDELINES (How to write the content):**
-1.  **Upskilling Logic:**
-    - **IF** "Current Skills" has "Learn React basics", a new \`title\` should be "**Master React State Management**" or "**Learn Next.js**".
-    - **IF** "Current Projects" has "Build a To-Do App", a new \`title\` should be "**Build a Real-Time Collaborative To-Do App**".
+1.  **Upskilling Logic (Abstract Rules):**
+    - **IF** "Current Skills" contains a 'basics' or 'fundamentals' topic (e.g., "Learn Python"), the new \`title\` should be an 'advanced' or 'specialized' version (e.g., "**Advanced Python: Concurrency**" or "**Data Analysis with Pandas**").
+    - **IF** "Current Projects" is a 'simple' or 'basic' project (e.g., "Build a simple calculator"), the new \`title\` should add a new dimension of complexity (e.g., "**Build a Real-Time Chat App**", "**Analyze a Large Dataset at Scale**", or "**Automate a CI/CD Pipeline**").
 
 2.  **Timelines:** Every skill and project **MUST** include a **bolded** suggested timeline on a **new line** (using \`\n\`).
 
@@ -100,8 +103,7 @@ You must regenerate this roadmap to be for a more "Intermediate" or "Advanced" l
     - **DO NOT** write long paragraphs.
     - The \`title\` string **MUST** be a **bolded title** (e.g., "**Simple Inventory Manager**"). **Do NOT** use \`##\` headings.
     - The \`description\` string **MUST** follow this format: \`One or two concise sentences explaining the goal.\n**Est. Time: 1-2 weeks**\`
-    - **Example \`description\`:** "Build a real-time chat API using WebSockets and Node.js, and deploy it.\n**Est. Time: 3-4 weeks**"
-`;
+    - **(New Non-Web Example):** "**Predictive Sales Model** Analyze a large dataset, build a predictive model, and deploy it as a simple API.\n**Est. Time: 3-4 weeks**"`;
         const rawReply = (await askVertex(prompt)).trim();
 
     const match = rawReply.match(/```json\s*([\s\S]*?)```/) || rawReply.match(/\{[\s\S]*\}/);
